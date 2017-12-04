@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DigiQueue.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace DigiQueue.Models.Viewmodels
     {
         [Required(ErrorMessage="Enter alias")]
         public string Alias { get; set; }
-        //[Required(ErrorMessage = "Choose a classroom")]
-        //public Classroom Classroom { get; set; }
+
+        [Required(ErrorMessage = "Choose a classroom")]
+        public Classroom Classroom { get; set; }
     }
 }
