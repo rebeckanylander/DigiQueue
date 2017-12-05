@@ -33,24 +33,13 @@ namespace DigiQueue.Controllers
 
         }
 
-        // GET: /<controller>/
-        public async Task<IActionResult> Index()
+        
+        [HttpPost]
+        public async Task<IActionResult> Login(AccountLoginVM viewModel)
         {
             //var result =
             //    await userManager.CreateAsync(new IdentityUser("admin"), "P@ssword123");
 
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(AccountLoginVM viewModel)
-        {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -65,7 +54,7 @@ namespace DigiQueue.Controllers
                 return View(viewModel);
             }
 
-            return RedirectToAction(nameof(Index), "Home"); //Varför inte nameof(ContactController)?
+            return RedirectToAction("Index", "Home"); //Varför inte nameof(ContactController)?
         }
     }
 }

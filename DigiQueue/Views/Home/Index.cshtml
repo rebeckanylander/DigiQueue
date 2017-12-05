@@ -1,4 +1,6 @@
-﻿@*startsida
+﻿@model HomeIndexVM
+
+@*startsida
     -- digimaster login
     if(login)
     {
@@ -7,9 +9,21 @@
     -- digistudent find digital classroom
 *@
 
-@Html.Partial("_Login")
 <div id="createClassroomDiv">
+@if (Model.LoggedIn)
+{
+    @Html.Partial("_CreateClassroom", Model.CreateClassroom)
+}
+else
+{
+    @Html.Partial("_Login", Model.DigiMaster)
+        
+}
+
 
 </div>
-@*Partial view CreateClassroom som är hidden tills man loggat in*@
-@Html.Partial("_FindClassroom")
+
+
+<div id="findClassroomDiv">
+    @Html.Partial("_FindClassroom", Model.DigiStudent)
+</div>
