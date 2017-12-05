@@ -10,17 +10,25 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DigiQueue
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        IConfiguration conf;
+
+        public Startup(IConfiguration conf)
+        {
+            this.conf = conf;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Digibase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Digibase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string connString = conf.GetConnectionString("connString");
+
             // Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Digibase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models/Entities" -Context "DigibaseContext" -Schema "DigiSchema" -Force
 
 
@@ -38,7 +46,6 @@ namespace DigiQueue
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

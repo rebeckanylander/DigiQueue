@@ -34,7 +34,7 @@ namespace DigiQueue.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //var result =
             //    await userManager.CreateAsync(new IdentityUser("admin"), "P@ssword123");

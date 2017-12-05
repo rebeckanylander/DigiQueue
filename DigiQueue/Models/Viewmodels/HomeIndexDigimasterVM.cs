@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DigiQueue.Models.Viewmodels
 {
-    public class HomeIndexDigimasterVM
+    public class HomeIndexDigiMasterVM
     {
         [Required(ErrorMessage = "Enter digital classroom name")]
         public string Name { get; set; }

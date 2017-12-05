@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DigiQueue.Models.Viewmodels
 {
-    public class HomeIndexDigistudentVM
+    public class HomeIndexDigiStudentVM
     {
         [Required(ErrorMessage="Enter alias")]
         public string Alias { get; set; }
