@@ -7,8 +7,8 @@ namespace DigiQueue.Models.Viewmodels
 {
     public class HomeIndexVM
     {
-        public AccountLoginVM DigiMaster { get; set; }
-        public HomeIndexDigiStudentVM DigiStudent { get; set; }
+        public HomeIndexLoginVM DigiMaster { get; set; }
+        public HomeIndexFindClassroomVM DigiStudent { get; set; }
         public HomeIndexCreateClassroomVM CreateClassroom { get; set; }
         public bool LoggedIn { get; set; }
     }

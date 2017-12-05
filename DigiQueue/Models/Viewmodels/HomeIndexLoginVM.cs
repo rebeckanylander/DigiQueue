@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DigiQueue.Models.Viewmodels
 {
-    public class AccountLoginVM
+    public class HomeIndexLoginVM
     {
         [Display(Name = "Username*")]
         [Required(ErrorMessage = "Enter a username")]

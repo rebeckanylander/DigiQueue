@@ -1,8 +1,14 @@
-﻿@model HomeIndexDigiStudentVM
-<form>
+﻿@model HomeIndexFindClassroomVM
+<form asp-controller="Classroom" asp-action="DigiStudent">
     <input type="text" asp-for="Alias" placeholder="Alias"/>
+
+    <br />
+
     <select>
-        <option value="Vad som">Vad som</option>
+        <option value="1">Klassrumsnamn</option> @*loopa*@
+        <option value="2">Klassrumsnamn2</option> @*loopa*@
     </select>
+
+    <br />
     <input type="submit" value="Gå in i klassrummet"/>
 </form>

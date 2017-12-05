@@ -1,6 +1,9 @@
 ﻿@model HomeIndexCreateClassroomVM
-<form asp-controller="Home" asp-action="CreateClassroom">
+<form asp-controller="Classroom" asp-action="DigiMaster">
     <input asp-for="Name" placeholder="Ange klassrumsnamn" />
+    <span asp-validation-for="Name"></span>
+
+    <br />
     
     <input type="submit" value="Skapa klassrummet" />
 </form>

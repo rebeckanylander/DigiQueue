@@ -35,7 +35,7 @@ namespace DigiQueue.Controllers
 
         
         [HttpPost]
-        public async Task<IActionResult> Login(AccountLoginVM viewModel)
+        public async Task<IActionResult> Login(HomeIndexLoginVM viewModel)
         {
             //var result =
             //    await userManager.CreateAsync(new IdentityUser("admin"), "P@ssword123");
@@ -50,7 +50,7 @@ namespace DigiQueue.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(nameof(AccountLoginVM.Username), "Invalid username/password");
+                ModelState.AddModelError(nameof(HomeIndexLoginVM.Username), "Invalid username/password");
                 return View(viewModel);
             }
 

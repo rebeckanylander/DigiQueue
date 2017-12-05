@@ -1,29 +1,19 @@
 ﻿@model HomeIndexVM
 
-@*startsida
-    -- digimaster login
-    if(login)
-    {
-    -- partial digimaster create digital classroom
-    }
-    -- digistudent find digital classroom
-*@
-
-<div id="createClassroomDiv">
-@if (Model.LoggedIn)
-{
-    @Html.Partial("_CreateClassroom", Model.CreateClassroom)
-}
-else
-{
-    @Html.Partial("_Login", Model.DigiMaster)
-        
-}
+<div class="container">
+    <div id="createClassroomDiv" class="digidiv">
+        @if (Model.LoggedIn)
+        {
+            @Html.Partial("_CreateClassroom", Model.CreateClassroom)
+        }
+        else
+        {
+            @Html.Partial("_Login", Model.DigiMaster)
+        }
+    </div>
 
 
-</div>
-
-
-<div id="findClassroomDiv">
-    @Html.Partial("_FindClassroom", Model.DigiStudent)
+    <div id="findClassroomDiv" class="digidiv">
+        @Html.Partial("_FindClassroom", Model.DigiStudent)
+    </div>
 </div>

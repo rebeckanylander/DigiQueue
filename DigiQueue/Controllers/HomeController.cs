@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DigiQueue.Models.Viewmodels;
+using DigiQueue.Models.Repositories;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,15 +12,21 @@ namespace DigiQueue.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: /<controller>/
+        IRepository repository;
+
+        public HomeController(IRepository repository)
+        {
+            this.repository = repository;
+        }
+
         public IActionResult Index()
         {
             var model = new HomeIndexVM
             {
                 LoggedIn = User.Identity.IsAuthenticated,
-                DigiStudent = new HomeIndexDigiStudentVM(),
+                DigiStudent = new HomeIndexFindClassroomVM(), //classrooms = repository.FindAllClassrooms();
                 CreateClassroom = new HomeIndexCreateClassroomVM(),
-                DigiMaster = new AccountLoginVM()
+                DigiMaster = new HomeIndexLoginVM()
             };
 
             return View(model);

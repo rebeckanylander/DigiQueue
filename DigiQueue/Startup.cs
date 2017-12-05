@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DigiQueue.Models.Entities;
+using DigiQueue.Models.Repositories;
 
 namespace DigiQueue
 {
@@ -41,8 +42,10 @@ namespace DigiQueue
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o => o.LoginPath = "/Home/Login");
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(o => o.LoginPath = "/Home/Login");
+
+            services.AddTransient<IRepository, DigiBaseRepository>();
 
             services.AddMvc();
 
