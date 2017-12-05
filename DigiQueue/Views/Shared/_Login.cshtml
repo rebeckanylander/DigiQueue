@@ -1,0 +1,8 @@
+﻿@model AccountLoginVM
+<form>
+    <input asp-for="Username" type="text" placeholder="Username" />
+    <span asp-validation-for="Username"></span>
+    <input asp-for="Password" type="text" placeholder="Password" />
+    <span asp-validation-for="Password"></span>
+    <input type="submit" value="Logga in" />
+</form>

@@ -1,8 +1,15 @@
 ﻿@*startsida
-    -- partial digimaster login
-    if(login) 
+    -- digimaster login
+    if(login)
     {
     -- partial digimaster create digital classroom
     }
-    -- partial digistudent find digital classroom
+    -- digistudent find digital classroom
 *@
+
+@Html.Partial("_Login")
+<div id="createClassroomDiv">
+
+</div>
+@*Partial view CreateClassroom som är hidden tills man loggat in*@
+@Html.Partial("_FindClassroom")
