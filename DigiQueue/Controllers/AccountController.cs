@@ -34,27 +34,6 @@ namespace DigiQueue.Controllers
         }
 
         
-        [HttpPost]
-        public async Task<IActionResult> Login(HomeIndexLoginVM viewModel)
-        {
-            //var result =
-            //    await userManager.CreateAsync(new IdentityUser("admin"), "P@ssword123");
-
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
-
-            var result = await signInManager.PasswordSignInAsync(
-                viewModel.Username, viewModel.Password, false, false);
-
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError(nameof(HomeIndexLoginVM.Username), "Invalid username/password");
-                return View(viewModel);
-            }
-
-            return RedirectToAction("Index", "Home"); //Varför inte nameof(ContactController)?
-        }
+        
     }
 }
