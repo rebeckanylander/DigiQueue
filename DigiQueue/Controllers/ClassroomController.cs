@@ -33,10 +33,14 @@ namespace DigiQueue.Controllers
         [HttpPost]
         public IActionResult DigiMaster(HomeIndexCreateClassroomVM vm)
         {
-            //if modelstate isvalid
-            //if klassrumnamn valid
+            if (!ModelState.IsValid)
+            {
 
-            string id = userManager.GetUserId(HttpContext.User);
+            }
+                //if modelstate isvalid
+                //if klassrumnamn valid
+
+                string id = userManager.GetUserId(HttpContext.User);
 
             //lägga till klassrum i db          id, namn, aspnetid
             //ClassroomDigiMasterVM model = repostiory.CreateClassroom(namn, aspnetid);
