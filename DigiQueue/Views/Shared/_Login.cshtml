@@ -1,12 +1,12 @@
 ﻿@model HomeIndexLoginVM
 <form asp-controller="Home" asp-action="Login">
-    <input asp-for="Username" placeholder="Username" />
+    <input asp-for="Username" placeholder="Username" value="admin" />
     <br />
     <span asp-validation-for="Username"></span>
 
     <br />
 
-    <input asp-for="Password" placeholder="Password" />
+    <input asp-for="Password" placeholder="Password" value="P@ssword123"/>
     <br />
     <span asp-validation-for="Password"></span>
 
