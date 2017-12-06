@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DigiQueue.Models.Viewmodels
 {
-    public class ClassroomDigiStudent
+    public class ClassroomDigiStudentVM
     {
         public string Alias { get; set; }
         public Classroom Classroom { get; set; }

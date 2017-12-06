@@ -7,6 +7,7 @@ using DigiQueue.Models.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using DigiQueue.Models.Repositories;
+using DigiQueue.Models.Entities;
 
 namespace DigiQueue.Controllers
 {
@@ -30,28 +31,14 @@ namespace DigiQueue.Controllers
             this.repository = repository;
         }
 
-        [HttpPost]
-        public IActionResult DigiMaster(HomeIndexCreateClassroomVM vm)
+        [HttpGet]
+        public async Task<IActionResult> DigiMaster(int id)
         {
-            if (!ModelState.IsValid)
-            {
-
-            }
-                //if modelstate isvalid
-                //if klassrumnamn valid
-
-                string id = userManager.GetUserId(HttpContext.User);
-
-            //lägga till klassrum i db          id, namn, aspnetid
-            //ClassroomDigiMasterVM model = repostiory.CreateClassroom(namn, aspnetid);
-            //if(model != null)
-            //return view(mdeol);
-
-
-            return View();
+            ClassroomDigiMasterVM model = await repository.FindClassroom(id);
+            return View(model);
         }
 
-        public IActionResult DigiStudent(HomeIndexFindClassroomVM vm) //ClassroomDigiStudentVM = alias, classroomId
+        public IActionResult DigiStudent(ClassroomDigiStudentVM id) //ClassroomDigiStudentVM = alias, classroomId
         {
             //if modelstate isvalid
 
@@ -60,7 +47,8 @@ namespace DigiQueue.Controllers
 
             //Logik
             //Validera
-            return View();
+            ClassroomDigiStudentVM model = new ClassroomDigiStudentVM { Alias = id.Alias, Classroom = id.Classroom };
+            return View(model);
         }
     }
 }

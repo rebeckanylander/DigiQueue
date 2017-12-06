@@ -12,5 +12,7 @@ namespace DigiQueue.Models.Repositories
         Task<ClassroomDigiMasterVM> CreateClassroom(string name, string id);
         Task<bool> IsClassroomNameAvailable(string name);
         Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom);
+        Task<ClassroomDigiMasterVM> FindClassroom(int id);
+        Task<Classroom[]> GetAllClassrooms();
     }
 }

@@ -37,12 +37,12 @@ namespace DigiQueue.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new HomeIndexVM
             {
                 LoggedIn = User.Identity.IsAuthenticated,
-                DigiStudent = new HomeIndexFindClassroomVM(), //classrooms = repository.FindAllClassrooms();
+                DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
                 CreateClassroom = new HomeIndexCreateClassroomVM(),
                 DigiMaster = new HomeIndexLoginVM()
             };
@@ -122,7 +122,7 @@ namespace DigiQueue.Controllers
 
             ClassroomDigiMasterVM modell = await repository.CreateClassroom(viewModel.Name, id);
 
-            if(modell != null)
+            if(modell == null)
             {
                 var model = new HomeIndexVM
                 {
@@ -134,11 +134,12 @@ namespace DigiQueue.Controllers
 
                 return RedirectToAction(nameof(Index), model);
             }
-            return RedirectToAction("DigiMaster", "Classroom", modell);
+            int classroomid = modell.Classroom.Id;
+            return RedirectToAction("DigiMaster", "Classroom", new { id = classroomid} );
         }
 
         [HttpPost]
-        public async Task<IActionResult> FindClassroom(ClassroomDigiStudent viewModel)
+        public IActionResult FindClassroom(ClassroomDigiStudentVM viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -153,21 +154,7 @@ namespace DigiQueue.Controllers
                 return RedirectToAction(nameof(Index), model);
             }
 
-            ClassroomDigiMasterVM modell = await repository.FindClassroom(viewModel.Alias, viewModel.Classroom);
-
-            if (modell != null)
-            {
-                var model = new HomeIndexVM
-                {
-                    LoggedIn = User.Identity.IsAuthenticated,
-                    DigiStudent = new HomeIndexFindClassroomVM { Alias = viewModel.Alias },
-                    CreateClassroom = new HomeIndexCreateClassroomVM(),
-                    DigiMaster = new HomeIndexLoginVM()
-                };
-
-                return RedirectToAction(nameof(Index), model);
-            }
-            return RedirectToAction("DigiStudent", "Classroom");
+            return RedirectToAction("DigiStudent", "Classroom", new { id = viewModel });
         }
     }
 }

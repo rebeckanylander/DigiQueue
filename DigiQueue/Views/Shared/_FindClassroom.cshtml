@@ -4,10 +4,16 @@
 
     <br />
 
-    <select>
-        <option value="1">Klassrumsnamn</option> @*loopa*@
-        <option value="2">Klassrumsnamn2</option> @*loopa*@
-    </select>
+    @Html.DropDownList("DropDownListKlasser",
+                    new SelectList(Model.Classrooms, "Id", "Name"),
+                    "Välj klassrum")
+    @*<select>
+        @foreach (Classroom classroom in Model.Classrooms)
+        {
+            <option id="@classroom.Id" value="@classroom.Name"></option> 
+
+        }
+    </select>*@
 
     <br />
     <input type="submit" value="Gå in i klassrummet"/>
