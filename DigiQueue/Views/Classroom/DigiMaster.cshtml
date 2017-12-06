@@ -1,1 +1,9 @@
-﻿Classroom/Digimaster/
+﻿@*@model ClassroomDigiMasterVM
+
+<h1>Klassrum</h1>
+<label>@Model.Classroom.Name</label>*@
+<div class="container">
+    @Html.Partial("_TeacherChatBox")
+    @Html.Partial("_TeacherWaitingList")
+    @Html.Partial("_TeacherInfoBox")
+</div>
