@@ -6,9 +6,17 @@
     margin-bottom: 20%;
 }
 
-.digidiv {
+/*.digidiv {
     display: flex;
     flex-direction: column;
     margin-left: 10%;
     margin-right: 10%;
+}*/
+
+.containerClassroom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
 }
+

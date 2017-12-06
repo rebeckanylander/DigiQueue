@@ -61,7 +61,7 @@ namespace DigiQueue
 
             app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseSignalR(routes => { routes.MapHub<DigiHub>("chat"); });
+            app.UseSignalR(routes => { routes.MapHub<DigiHub>("digihub"); });
             app.UseMvcWithDefaultRoute();
         }
     }

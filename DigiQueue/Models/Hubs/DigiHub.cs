@@ -10,7 +10,7 @@ namespace DigiQueue.Models.Hubs
     {
         public Task Send(string message)
         {
-            return Clients.All.InvokeAsync("Send", message);
+            return Clients.All.InvokeAsync("onSend", message);
         }
     }
 }

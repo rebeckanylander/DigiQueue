@@ -1,12 +1,14 @@
 ﻿@model HomeIndexFindClassroomVM
 <form asp-controller="Home" asp-action="FindClassroom">
     <input type="text" asp-for="Alias" placeholder="Alias"/>
+    <br />
+    <span asp-validation-for="Alias"></span>
+
 
     <br />
 
     @Html.DropDownList("DropDownListKlasser",
-                    new SelectList(Model.Classrooms, "Id", "Name"),
-                    "Välj klassrum")
+                    new SelectList(Model.Classrooms, "Id", "Name"))
     @*<select>
         @foreach (Classroom classroom in Model.Classrooms)
         {
@@ -18,3 +20,4 @@
     <br />
     <input type="submit" value="Gå in i klassrummet"/>
 </form>
+

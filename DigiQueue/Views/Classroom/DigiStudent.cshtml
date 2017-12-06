@@ -1,12 +1,38 @@
 ﻿@model ClassroomDigiStudentVM
 
-<center><h1>Klassrum</h1> </center> @Model.Classroom.Name
+<center><h1>@Model.Classroom.Name</h1> </center> 
+<div id="alias" hidden>@Model.Alias</div>
 
-<div class="container">
-    
-        @Html.Partial("_StudentProblemBox")
-        @Html.Partial("_StudentWaitingList")
-        @Html.Partial("_StudentChatbox")
-        @Html.Partial("_StudentInfoboxFromTeacher")
-        
+<div class="containerClassroom">
+
+    @Html.Partial("_StudentProblemBox")
+    @Html.Partial("_StudentWaitingList")
+    @Html.Partial("_StudentChatbox")
+    @Html.Partial("_StudentInfoboxFromTeacher")
+
 </div>
+@section scriptsSection
+    {
+    <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let connection = new signalR.HubConnection('/digihub');
+            connection.start();
+
+            $("#chatBoxButton").click(() => {
+                let message = $("#alias").text() + ": " + $("#messageBox").val();
+                connection.invoke('Send', message);
+
+            });
+
+            connection.on('onSend', data => {
+                $("#chatBox").append(data + "\n");
+                $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+            });
+
+            
+
+        });
+
+    </script>
+}
