@@ -1,1 +1,12 @@
-﻿Classroom/Digistudent/
+﻿@*@model ClassroomStudentVM*@
+
+<center><h1>Klassrum</h1> </center> @*@Model.CLassroom.Name*@
+
+<div class="container">
+    
+        @Html.Partial("_StudentProblemBox")
+        @Html.Partial("_StudentWaitingList")
+        @Html.Partial("_StudentChatbox")
+        @Html.Partial("_StudentInfoboxFromTeacher")
+        
+</div>
