@@ -134,7 +134,7 @@ namespace DigiQueue.Controllers
 
                 return RedirectToAction(nameof(Index), model);
             }
-            return RedirectToAction("DigiMaster", "Classroom");
+            return RedirectToAction("DigiMaster", "Classroom", modell);
         }
 
         [HttpPost]

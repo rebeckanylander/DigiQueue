@@ -25,9 +25,9 @@ namespace DigiQueue.Models.Repositories
             return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.Name == name && c.AspUserId == id) };
         }
 
-        public Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom)
+        public async Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom)
         {
-            throw new NotImplementedException();
+            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c == classroom) };
         }
 
         public async Task<bool> IsClassroomNameAvailable(string name)
@@ -35,11 +35,11 @@ namespace DigiQueue.Models.Repositories
             Classroom classroom = await context.Classroom.FirstOrDefaultAsync(c => c.Name == name);
             if (classroom != null)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }
