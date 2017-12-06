@@ -1,4 +1,5 @@
 ﻿using DigiQueue.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,5 +15,8 @@ namespace DigiQueue.Models.Viewmodels
 
         [Required(ErrorMessage = "Choose a classroom")]
         public Classroom[] Classrooms { get; set; }
+
+        //public SelectList SelectList { get; set; }
+
     }
 }

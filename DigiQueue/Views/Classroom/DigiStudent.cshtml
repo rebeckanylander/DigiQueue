@@ -1,6 +1,6 @@
-﻿@*@model ClassroomStudentVM*@
+﻿@model ClassroomDigiStudentVM
 
-<center><h1>Klassrum: @Model.CLassroom.Name</h1> </center> 
+<center><h1>Klassrum</h1> </center> @Model.Classroom.Name
 
 <div class="container">
     
@@ -10,4 +10,3 @@
         @Html.Partial("_StudentInfoboxFromTeacher")
         
 </div>
-<div><input type="submit" value="Lämna rummet" /></div>

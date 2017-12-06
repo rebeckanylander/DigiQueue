@@ -38,7 +38,9 @@ namespace DigiQueue.Controllers
             return View(model);
         }
 
-        public IActionResult DigiStudent(ClassroomDigiStudentVM id) //ClassroomDigiStudentVM = alias, classroomId
+        [HttpGet]
+        [Route("Classroom/DigiStudent/{alias}/{classroomId}")]
+        public async Task<IActionResult> DigiStudent(string alias, int classroomId) //ClassroomDigiStudentVM = alias, classroomId
         {
             //if modelstate isvalid
 
@@ -47,7 +49,9 @@ namespace DigiQueue.Controllers
 
             //Logik
             //Validera
-            ClassroomDigiStudentVM model = new ClassroomDigiStudentVM { Alias = id.Alias, Classroom = id.Classroom };
+            var classroom = await repository.FindClassroom(classroomId);
+
+            ClassroomDigiStudentVM model = new ClassroomDigiStudentVM { Alias = alias, Classroom = classroom.Classroom };
             return View(model);
         }
     }

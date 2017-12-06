@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DigiQueue.Models.Entities;
 using DigiQueue.Models.Repositories;
+using DigiQueue.Models.Hubs;
 
 namespace DigiQueue
 {
@@ -46,7 +47,7 @@ namespace DigiQueue
             //    .AddCookie(o => o.LoginPath = "/Home/Login");
 
             services.AddTransient<IRepository, DigiBaseRepository>();
-
+            services.AddSignalR();
             services.AddMvc();
 
         }
@@ -60,6 +61,7 @@ namespace DigiQueue
 
             app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseSignalR(routes => { routes.MapHub<DigiHub>("chat"); });
             app.UseMvcWithDefaultRoute();
         }
     }

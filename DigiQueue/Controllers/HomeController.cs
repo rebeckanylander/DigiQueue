@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using DigiQueue.Models.Viewmodels;
 using DigiQueue.Models.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -154,7 +155,9 @@ namespace DigiQueue.Controllers
                 return RedirectToAction(nameof(Index), model);
             }
 
-            return RedirectToAction("DigiStudent", "Classroom", new { id = viewModel });
+            var form = int.Parse(Request.Form["DropDownListKlasser"]);
+
+            return RedirectToAction("DigiStudent", "Classroom", new { alias = viewModel.Alias, classroomId = form });
         }
     }
 }
