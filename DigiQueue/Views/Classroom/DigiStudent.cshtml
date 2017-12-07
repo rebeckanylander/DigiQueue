@@ -15,58 +15,82 @@
         {
         <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
         <script>
+            let digiUi = {
+                chatBoxButton: $("#chatBoxButton"),
+                alias: $("#alias"),
+                messageBox: $("#messageBox"),
+                chatBox: $("#chatBox"),
+                problemButton: $("#problemButton"),
+                locationText: $("#locationText"),
+                descriptionText: $("#descriptionText"),
+                infoBox: $("#infoBox"),
+                waitingList: $("#waitingList")
+            }
+
+            let digiFunctions = {
+                ChatSend: 'ChatSend',
+                onChatSend: 'onChatSend',
+                onUpdateInfoBox: 'onUpdateInfoBox',
+                RemoveSelfFromWaitingList: 'RemoveSelfFromWaitingList',
+                GetWaitingList: 'GetWaitingList',
+                onUpdateWaitingListItem: 'onUpdateWaitingListItem',
+                AddWaitingListItem: 'AddWaitingListItem',
+                onInfoSend: 'onInfoSend'
+                
+            }
+
             $(document).ready(function () {
                 let connection = new signalR.HubConnection('/digihub');
-                connection.start().then(function () { connection.invoke('GetWaitingList'); });
+                connection.start().then(function () { connection.invoke(digiFunctions.GetWaitingList); });
 
-                $("#chatBoxButton").click(() => {
-                    let message = $("#alias").text() + ": " + $("#messageBox").val();
-                    connection.invoke('ChatSend', message);
-                    $("#messageBox").val("");
+                digiUi.chatBoxButton.click(() => {
+                    let message = digiUi.alias.text() + ": " + digiUi.messageBox.val();
+                    connection.invoke(digiFunctions.ChatSend, message);
+                    digiUi.messageBox.val("");
                 });
 
-                connection.on('onChatSend', data => {
-                    $("#chatBox").append(data + "\n");
-                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+                connection.on(digiFunctions.onChatSend, data => {
+                    digiUi.chatBox.append(data + "\n");
+                    digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
                 });
 
-                $("#problemButton").click(() => {
-                    if ($("#problemButton").text() == "Add") { //Add
-                        $("#problemButton").text("Delete");
+                digiUi.problemButton.click(() => {
+                    if (digiUi.problemButton.text() == "Add") { //Add
+                        digiUi.problemButton.text("Delete");
                         let message = {
-                            "alias": $("#alias").text(),
-                            "location": $("#locationText").val(),
-                            "description": $("#descriptionText").val()
+                            "alias": digiUi.alias.text(),
+                            "location": digiUi.locationText.val(),
+                            "description": digiUi.descriptionText.val()
                         }
-                        connection.invoke('AddWaitingListItem', JSON.stringify(message));
+                        connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
                     } else //Delete
                     {
-                        $("#problemButton").text("Add");
-                        connection.invoke('RemoveSelfFromWaitingList', $("#alias").text());
+                        digiUi.problemButton.text("Add");
+                        connection.invoke(digiFunctions.RemoveSelfFromWaitingList, digiUi.alias.text());
                     }
                 });
 
-                connection.on('onUpdateWaitingListItem', data => {
-                    $("#waitingList").text("");
+                connection.on(digiFunctions.onUpdateWaitingListItem, data => {
+                    digiUi.waitingList.text("");
                     var jsonObj = JSON.parse(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        $("#waitingList").append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
+                        digiUi.waitingList.append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
                     }
                 });
 
-                connection.on('onInfoSend', data => {
-                    $("#infoBox").append(data + "\n");
-                    $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
+                connection.on(digiFunctions.onInfoSend, data => {
+                    digiUi.infoBox.append(data + "\n");
+                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
                     alert('Ny info!!!!\n'+data);
                 });
 
-                connection.on('onUpdateInfoBox', data => {
-                    $("#infoBox").val("");
+                connection.on(digiFunctions.onUpdateInfoBox, data => {
+                    digiUi.infoBox.val("");
                     var jsonObj = JSON.parse(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        $("#infoBox").append(jsonObj[i] + "\n");
+                        digiUi.infoBox.append(jsonObj[i] + "\n");
                     }
-                    $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
+                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
                 });
             });
 
