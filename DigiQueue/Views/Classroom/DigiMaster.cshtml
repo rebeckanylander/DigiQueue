@@ -24,6 +24,7 @@
                 connection.on('onInfoSend', data => {
                     $("#infoBox").append(data + "\n");
                     $("#teacherMessageBox").val("");
+                    $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
                 });
 
                 $("#removeFromWaitingList").click(() => {

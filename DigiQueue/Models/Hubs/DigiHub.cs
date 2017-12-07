@@ -39,7 +39,10 @@ namespace DigiQueue.Models.Hubs
         public Task AddWaitingListItem(string jsonString) 
         {
             var jsonObj = JsonConvert.DeserializeObject<Problem>(jsonString);
-            waitingList.Add(jsonObj);
+            if ((waitingList.SingleOrDefault(p => p.Alias == jsonObj.Alias)) == null)
+            {
+                waitingList.Add(jsonObj);
+            }
 
             string json = JsonConvert.SerializeObject(waitingList);
             return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
