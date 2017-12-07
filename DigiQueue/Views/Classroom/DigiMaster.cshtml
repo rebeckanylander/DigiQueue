@@ -7,3 +7,39 @@
     @Html.Partial("_TeacherWaitingList")
     @Html.Partial("_TeacherInfoBox")
 </div>
+@section scriptsSection
+    {
+    <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <script>
+        $(document).ready(
+            function () {
+                let connection = new signalR.HubConnection('/digihub');
+                connection.start();
+                $("#sendInfoButton").click(
+                    function () {
+                        let message = $("#teacherMessageBox").val();
+                        connection.invoke('InfoSend', message);
+                    });
+
+                connection.on('onInfoSend', data => {
+                    $("#infoBox").append(data + "\n");
+                    $("#teacherMessageBox").val("");
+                });
+
+                $("#removeFromWaitingList").click(() => {
+                    let aliasToRemove = $("#teacherWaitingList").value; //selecteditem;
+                        connection.invoke('DeleteWaitingListItem', aliasToRemove);
+                });
+
+                connection.on('onDeleteWaitingListItem', data => {
+                    let json = json.parse(data);
+                    alert(json);
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        $("#teacherWaitingList").append('<option value="'+json[i]+'">'+'test'+json[i]+'</option>');
+                    }
+                 })
+            }
+        );
+    </script>
+}
