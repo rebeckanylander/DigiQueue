@@ -9,13 +9,7 @@
 
     @Html.DropDownList("DropDownListKlasser",
                     new SelectList(Model.Classrooms, "Id", "Name"))
-    @*<select>
-        @foreach (Classroom classroom in Model.Classrooms)
-        {
-            <option id="@classroom.Id" value="@classroom.Name"></option> 
 
-        }
-    </select>*@
 
     <br />
     <input type="submit" value="Gå in i klassrummet"/>

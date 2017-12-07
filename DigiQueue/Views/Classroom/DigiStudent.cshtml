@@ -1,35 +1,71 @@
 ﻿@model ClassroomDigiStudentVM
 
-<center><h1>@Model.Classroom.Name</h1> </center> 
+<center><h1>@Model.Classroom.Name</h1> </center>
 <div id="alias" hidden>@Model.Alias</div>
 
-<div class="containerClassroom">
+    <div class="containerClassroom">
 
-    @Html.Partial("_StudentProblemBox")
-    @Html.Partial("_StudentWaitingList")
-    @Html.Partial("_StudentChatbox")
-    @Html.Partial("_StudentInfoboxFromTeacher")
+        @Html.Partial("_StudentProblemBox")
+        @Html.Partial("_StudentWaitingList")
+        @Html.Partial("_StudentChatbox")
+        @Html.Partial("_StudentInfoboxFromTeacher")
 
-</div>
-@section scriptsSection
-    {
-    <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            let connection = new signalR.HubConnection('/digihub');
-            connection.start();
+    </div>
+    @section scriptsSection
+        {
+        <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                let connection = new signalR.HubConnection('/digihub');
+                connection.start();
 
-            $("#chatBoxButton").click(() => {
-                let message = $("#alias").text() + ": " + $("#messageBox").val();
-                connection.invoke('Send', message);
+                $("#chatBoxButton").click(() => {
+                    let message = $("#alias").text() + ": " + $("#messageBox").val();
+                    connection.invoke('ChatSend', message);
+                });
 
+                connection.on('onChatSend', data => {
+                    $("#chatBox").append(data + "\n");
+                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+                });
+
+                $("#problemButton").click(() => {
+                    if ($("#problemButton").text() == "Add") { //Add
+                        $("#problemButton").text("Delete");
+                        let message = {
+                            "alias": $("#alias").text(),
+                            "location": $("#locationText").val(),
+                            "description": $("#descriptionText").text()
+                        }
+                        connection.invoke('AddWaitingListItem', JSON.stringify(message));
+                    } else //Delete
+                    {
+                        $("#problemButton").text("Add");
+                        connection.invoke('RemoveSelfFromWaitingList', $("#alias").text());
+                    }
+                });
+
+                connection.on('onUpdateWaitingListItem', data => {
+                    $("#waitingList").text("");
+                    var jsonObj = JSON.parse(data);
+                    for (var i = 0; jsonObj.length; i++) {
+                        $("#waitingList").append(jsonObj[i].alias + " " + jasonObj[i].location + " " + jasonObj[i].description + "\n");
+                    }
+                });
+
+                connection.on('onInfoSend', data => {
+                    $("#infoBox").append(data + "\n");
+                    $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
+                });
+
+                connection.on('onUpdateInfoBox', data => {
+                    $("#infoBox").val("");
+                    var jsonObj = JSON.parse(data);
+                    for (var i = 0; jsonObj.length; i++) {
+                        $("#infoBox").append(jsonObj[i] + "\n");
+                    }
+                });
             });
 
-            connection.on('onSend', data => {
-                $("#chatBox").append(data + "\n");
-                $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
-            });
-        });
-
-    </script>
-}
+        </script>
+    }
