@@ -15,26 +15,10 @@ namespace DigiQueue.Controllers
     public class HomeController : Controller
     {
         IRepository repository;
-        //IdentityDbContext identityContext;
-        UserManager<IdentityUser> userManager;
-        SignInManager<IdentityUser> signInManager;
-        RoleManager<IdentityRole> roleManager;
 
-        public HomeController(
-            IRepository repository,
-            //IdentityDbContext identityContext,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+        public HomeController(IRepository repository)
         {
             this.repository = repository;
-            //this.identityContext = identityContext;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
-
-            //identityContext.Database.EnsureCreated();
-
         }
 
 
@@ -70,8 +54,8 @@ namespace DigiQueue.Controllers
                 return RedirectToAction(nameof(Index), model);
             }
 
-            var result = await signInManager.PasswordSignInAsync(
-                viewModel.Username, viewModel.Password, false, false);
+
+            Microsoft.AspNetCore.Identity.SignInResult result = await repository.SignIn(viewModel.Username, viewModel.Password);
 
             if (!result.Succeeded)
             {
@@ -118,8 +102,7 @@ namespace DigiQueue.Controllers
 
                 return RedirectToAction(nameof(Index), model);
             }
-
-            string id = userManager.GetUserId(HttpContext.User);
+            string id = repository.GetUserId(HttpContext.User);
 
             ClassroomDigiMasterVM modell = await repository.CreateClassroom(viewModel.Name, id);
 

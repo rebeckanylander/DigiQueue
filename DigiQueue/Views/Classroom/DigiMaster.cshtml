@@ -11,47 +11,57 @@
     {
     <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
     <script>
+        let digiUi = {
+            sendInfoButton: $("#sendInfoButton"),
+            teacherMessageBox: $("#teacherMessageBox"),
+            infoBox: $("#infoBox"),
+            removeFromWaitingList: $("#removeFromWaitingList"),
+            teacherWaitingList: $("#teacherWaitingList"),
+            chatBox: $("#chatBox")
+        }
+
         $(document).ready(
             function () {
                 let connection = new signalR.HubConnection('/digihub');
                 connection.start().then(function () { connection.invoke('GetWaitingList'); });
-                $("#sendInfoButton").click(
+                digiUi.sendInfoButton.click(
                     function () {
-                        let message = $("#teacherMessageBox").val();
+                        let message = digiUi.teacherMessageBox.val();
                         connection.invoke('InfoSend', message);
                     });
 
                 connection.on('onInfoSend', data => {
-                    $("#infoBox").append(data + "\n");
-                    $("#teacherMessageBox").val("");
-                    $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
+                    digiUi.infoBox.append(data + "\n");
+                    digiUi.teacherMessageBox.val("");
+                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
                 });
 
-                $("#removeFromWaitingList").click(() => {
-                    let aliasToRemove = $("#teacherWaitingList").val(); //selecteditem;
+                digiUi.removeFromWaitingList.click(() => {
+                    let aliasToRemove = digiUi.teacherWaitingList.val(); //selecteditem;
+                    if (aliasToRemove != null) {
                         connection.invoke('DeleteWaitingListItem', aliasToRemove);
+                    }
                 });
 
                 connection.on('onDeleteWaitingListItem', data => {
                     let json = json.parse(data);
-                    for (var i = 0; i < json.length; i++)
-                    {
-                        $("#teacherWaitingList").append('<option value="'+json[i]+'">'+'test'+json[i]+'</option>');
+                    for (var i = 0; i < json.length; i++) {
+                        digiUi.teacherWaitingList.append('<option value="' + json[i] + '">' + 'test' + json[i] + '</option>');
                     }
                 })
 
                 connection.on('onUpdateWaitingListItem', data => {
-                    $("#teacherWaitingList").html("");
+                    digiUi.teacherWaitingList.html("");
                     var jsonObj = JSON.parse(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        $("#teacherWaitingList").append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
+                        digiUi.teacherWaitingList.append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
                     }
                     alert('Antal elever som behöver hjälp: ' + jsonObj.length);
                 });
 
                 connection.on('onChatSend', data => {
-                    $("#chatBox").append(data + "\n");
-                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+                    digiUi.chatBox.append(data + "\n");
+                    digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
                 });
             }
         );

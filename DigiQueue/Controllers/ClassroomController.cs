@@ -13,21 +13,10 @@ namespace DigiQueue.Controllers
 {
     public class ClassroomController : Controller
     {
-
-        UserManager<IdentityUser> userManager;
-        SignInManager<IdentityUser> signInManager;
-        RoleManager<IdentityRole> roleManager;
         IRepository repository;
 
-        public ClassroomController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
-            IRepository repository)
+        public ClassroomController(IRepository repository)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
             this.repository = repository;
         }
 
@@ -40,15 +29,8 @@ namespace DigiQueue.Controllers
 
         [HttpGet]
         [Route("Classroom/DigiStudent/{alias}/{classroomId}")]
-        public async Task<IActionResult> DigiStudent(string alias, int classroomId) //ClassroomDigiStudentVM = alias, classroomId
+        public async Task<IActionResult> DigiStudent(string alias, int classroomId)
         {
-            //if modelstate isvalid
-
-            //var classroom = repository.GetClassroomById(vm.ClassroomId);
-            //var model = ny vymovel som innehåller alias och classroom
-
-            //Logik
-            //Validera
             var classroom = await repository.FindClassroom(classroomId);
 
             ClassroomDigiStudentVM model = new ClassroomDigiStudentVM { Alias = alias, Classroom = classroom.Classroom };

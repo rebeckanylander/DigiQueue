@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DigiQueue.Models.Entities;
 using DigiQueue.Models.Viewmodels;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace DigiQueue.Models.Repositories
 {
@@ -14,5 +16,7 @@ namespace DigiQueue.Models.Repositories
         Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom);
         Task<ClassroomDigiMasterVM> FindClassroom(int id);
         Task<Classroom[]> GetAllClassrooms();
+        Task<SignInResult> SignIn(string username, string password);
+        string GetUserId(ClaimsPrincipal claimsPrincipal);
     }
 }

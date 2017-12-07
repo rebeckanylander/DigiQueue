@@ -5,15 +5,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using DigiQueue.Models.Viewmodels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace DigiQueue.Models.Repositories
 {
     public class DigiBaseRepository : IRepository
     {
         DigibaseContext context;
+        UserManager<IdentityUser> userManager;
+        SignInManager<IdentityUser> signInManager;
+        RoleManager<IdentityRole> roleManager;
 
-        public DigiBaseRepository(DigibaseContext context)
+        public DigiBaseRepository(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            DigibaseContext context)
         {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.roleManager = roleManager;
             this.context = context;
         }
 
@@ -40,10 +53,22 @@ namespace DigiQueue.Models.Repositories
             return await context.Classroom.ToArrayAsync();
         }
 
+        public string GetUserId(ClaimsPrincipal claimsPrincipal)
+        {
+            return userManager.GetUserId(claimsPrincipal);
+        }
+
         public async Task<bool> IsClassroomNameAvailable(string name)
         {
             Classroom classroom = await context.Classroom.FirstOrDefaultAsync(c => c.Name == name);
             return classroom == null;
+        }
+
+        public async Task<SignInResult> SignIn(string username, string password)
+        {
+            return await signInManager.PasswordSignInAsync(
+                username, password, false, false);
+
         }
     }
 }
