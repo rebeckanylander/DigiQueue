@@ -48,6 +48,11 @@
                         $("#teacherWaitingList").append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
                     }
                 });
+
+                connection.on('onChatSend', data => {
+                    $("#chatBox").append(data + "\n");
+                    $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight);
+                });
             }
         );
     </script>

@@ -50,8 +50,6 @@
                     var jsonObj = JSON.parse(data);
                     alert(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        //$("#waitingList").append("Hej"+"\n");
-                        //alert(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description);
                         $("#waitingList").append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
                     }
                 });
