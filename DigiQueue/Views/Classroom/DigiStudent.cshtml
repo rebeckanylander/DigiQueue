@@ -1,4 +1,8 @@
-﻿@model ClassroomDigiStudentVM
+﻿@{
+    ViewBag.Title = Model.Classroom.Name;
+}
+
+@model ClassroomDigiStudentVM
 
 <center><h1>@Model.Classroom.Name</h1> </center>
 <div id="alias" hidden>@Model.Alias</div>
