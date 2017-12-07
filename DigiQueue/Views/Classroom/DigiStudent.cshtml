@@ -17,11 +17,12 @@
         <script>
             $(document).ready(function () {
                 let connection = new signalR.HubConnection('/digihub');
-                connection.start();
+                connection.start().then(function () { connection.invoke('GetWaitingList'); });
 
                 $("#chatBoxButton").click(() => {
                     let message = $("#alias").text() + ": " + $("#messageBox").val();
                     connection.invoke('ChatSend', message);
+                    $("#messageBox").val("");
                 });
 
                 connection.on('onChatSend', data => {
@@ -48,7 +49,6 @@
                 connection.on('onUpdateWaitingListItem', data => {
                     $("#waitingList").text("");
                     var jsonObj = JSON.parse(data);
-                    alert(data);
                     for (var i = 0; i < jsonObj.length; i++) {
                         $("#waitingList").append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
                     }
@@ -57,6 +57,7 @@
                 connection.on('onInfoSend', data => {
                     $("#infoBox").append(data + "\n");
                     $("#infoBox").scrollTop($("#infoBox")[0].scrollHeight);
+                    alert('Ny info!!!!\n'+data);
                 });
 
                 connection.on('onUpdateInfoBox', data => {

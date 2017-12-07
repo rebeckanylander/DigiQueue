@@ -11,6 +11,10 @@ namespace DigiQueue.Models.Hubs
     {
         static List<Problem> waitingList = new List<Problem>();
 
+        public Task GetWaitingList() {
+            return Clients.Client(Context.ConnectionId).InvokeAsync("onUpdateWaitingListItem", JsonConvert.SerializeObject(waitingList));
+        }
+
         //Skicka meddelande i infobox - digimaster
         public Task InfoSend(string message) 
         {

@@ -14,7 +14,7 @@
         $(document).ready(
             function () {
                 let connection = new signalR.HubConnection('/digihub');
-                connection.start();
+                connection.start().then(function () { connection.invoke('GetWaitingList'); });
                 $("#sendInfoButton").click(
                     function () {
                         let message = $("#teacherMessageBox").val();
@@ -34,7 +34,6 @@
 
                 connection.on('onDeleteWaitingListItem', data => {
                     let json = json.parse(data);
-                    alert(json);
                     for (var i = 0; i < json.length; i++)
                     {
                         $("#teacherWaitingList").append('<option value="'+json[i]+'">'+'test'+json[i]+'</option>');
@@ -47,6 +46,7 @@
                     for (var i = 0; i < jsonObj.length; i++) {
                         $("#teacherWaitingList").append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
                     }
+                    alert('Antal elever som behöver hjälp: ' + jsonObj.length);
                 });
 
                 connection.on('onChatSend', data => {
