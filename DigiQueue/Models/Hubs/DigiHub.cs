@@ -26,7 +26,7 @@ namespace DigiQueue.Models.Hubs
                 waitingList.Remove(problem);
             }
             string json = JsonConvert.SerializeObject(waitingList);
-            return Clients.All.InvokeAsync("onDeleteWaitingListItem", json);
+            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
         }
 
         //Skicka meddelande i chatten - digistudent
@@ -36,15 +36,28 @@ namespace DigiQueue.Models.Hubs
         }
 
         //Lägga till sig på listan - digistudent
-        public Task AddWaitingListItem() 
+        public Task AddWaitingListItem(string jsonString) 
         {
-            throw new NotImplementedException();
+            var jsonObj = JsonConvert.DeserializeObject<Problem>(jsonString);
+            waitingList.Add(jsonObj);
+
+            string json = JsonConvert.SerializeObject(waitingList);
+            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
         }
 
         //Ta bort sig själv på listan - digistudent
-        public Task RemoveSelfFromWaitingList() 
+        public Task RemoveSelfFromWaitingList(string alias) 
         {
-            throw new NotImplementedException();
+            
+            Problem problem = waitingList.SingleOrDefault(p => p.Alias == alias);
+
+            if (problem != null)
+            {
+                waitingList.Remove(problem);
+            }
+            string json = JsonConvert.SerializeObject(waitingList);
+            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
+       
         }
     }
 }
