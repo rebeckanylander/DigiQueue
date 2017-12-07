@@ -9,7 +9,7 @@ namespace DigiQueue.Models.Hubs
 {
     public class DigiHub : Hub
     {
-        List<Problem> waitingList = new List<Problem>();
+        static List<Problem> waitingList = new List<Problem>();
 
         //Skicka meddelande i infobox - digimaster
         public Task InfoSend(string message) 
@@ -32,7 +32,7 @@ namespace DigiQueue.Models.Hubs
         //Skicka meddelande i chatten - digistudent
         public Task ChatSend(string message) 
         {
-            return Clients.All.InvokeAsync("onSend", message);
+            return Clients.All.InvokeAsync("onChatSend", message);
         }
 
         //Lägga till sig på listan - digistudent

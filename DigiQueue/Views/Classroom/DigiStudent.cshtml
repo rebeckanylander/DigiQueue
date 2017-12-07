@@ -35,7 +35,7 @@
                         let message = {
                             "alias": $("#alias").text(),
                             "location": $("#locationText").val(),
-                            "description": $("#descriptionText").text()
+                            "description": $("#descriptionText").val()
                         }
                         connection.invoke('AddWaitingListItem', JSON.stringify(message));
                     } else //Delete
@@ -48,8 +48,11 @@
                 connection.on('onUpdateWaitingListItem', data => {
                     $("#waitingList").text("");
                     var jsonObj = JSON.parse(data);
-                    for (var i = 0; jsonObj.length; i++) {
-                        $("#waitingList").append(jsonObj[i].alias + " " + jasonObj[i].location + " " + jasonObj[i].description + "\n");
+                    alert(data);
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        //$("#waitingList").append("Hej"+"\n");
+                        //alert(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description);
+                        $("#waitingList").append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
                     }
                 });
 
@@ -61,7 +64,7 @@
                 connection.on('onUpdateInfoBox', data => {
                     $("#infoBox").val("");
                     var jsonObj = JSON.parse(data);
-                    for (var i = 0; jsonObj.length; i++) {
+                    for (var i = 0; i < jsonObj.length; i++) {
                         $("#infoBox").append(jsonObj[i] + "\n");
                     }
                 });
