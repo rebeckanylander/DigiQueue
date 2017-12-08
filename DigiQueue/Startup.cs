@@ -29,10 +29,9 @@ namespace DigiQueue
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Digibase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             string connString = conf.GetConnectionString("connString");
-
-            // Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Digibase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models/Entities" -Context "DigibaseContext" -Schema "DigiSchema" -Force
+            
+            // Scaffold-DbContext "put connstring" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models/Entities" -Context "DigibaseContext" -Schema "DigiSchema" -Force
 
 
             services.AddDbContext<DigibaseContext>(o => o.UseSqlServer(connString));
@@ -43,8 +42,8 @@ namespace DigiQueue
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(o => o.LoginPath = "/Home/Login");
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o => o.LoginPath = "/Home/Login");
 
             services.AddTransient<IRepository, DigiBaseRepository>();
             services.AddSignalR();

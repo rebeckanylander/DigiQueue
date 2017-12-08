@@ -58,10 +58,42 @@ namespace DigiQueue.Models.Repositories
             return userManager.GetUserId(claimsPrincipal);
         }
 
+        public string GetUsername(ClaimsPrincipal claimsPrincipal)
+        {
+            return userManager.GetUserName(claimsPrincipal);
+        }
+
         public async Task<bool> IsClassroomNameAvailable(string name)
         {
             Classroom classroom = await context.Classroom.FirstOrDefaultAsync(c => c.Name == name);
             return classroom == null;
+        }
+
+        public void SaveChatToDigiBase(ProtocolMessage json)
+        {
+            Message message = new Message
+            {
+                Alias = json.Alias,
+                ClassroomId = json.ClassroomId,
+                Date = json.Date,
+                Content = json.Description
+            };
+            context.Message.Add(message);
+            context.SaveChanges();
+        }
+
+        public void SaveProblemToDigiBase(ProtocolMessage json)
+        {
+            Problem problem = new Problem
+            {
+                Alias = json.Alias,
+                ClassroomId = json.ClassroomId,
+                Date = json.Date,
+                Description = json.Description,
+                Type = (int)json.PType
+            };
+            context.Problem.Add(problem);
+            context.SaveChanges();
         }
 
         public async Task<SignInResult> SignIn(string username, string password)

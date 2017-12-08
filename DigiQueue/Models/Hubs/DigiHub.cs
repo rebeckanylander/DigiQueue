@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using DigiQueue.Models.Repositories;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,62 +10,107 @@ namespace DigiQueue.Models.Hubs
 {
     public class DigiHub : Hub
     {
-        static List<Problem> waitingList = new List<Problem>();
+        IRepository repository;
+        static List<ProblemVM> waitingList = new List<ProblemVM>();
 
-        public Task GetWaitingList() {
-            return Clients.Client(Context.ConnectionId).InvokeAsync("onUpdateWaitingListItem", JsonConvert.SerializeObject(waitingList));
+        public DigiHub(IRepository repository)
+        {
+            this.repository = repository;
+        }
+
+        public Task GetWaitingList()
+        {
+            var jsonList = JsonConvert.SerializeObject(waitingList);
+            return Clients.Client(Context.ConnectionId).InvokeAsync("onUpdateWaitingListItem", jsonList);
         }
 
         //Skicka meddelande i infobox - digimaster
-        public Task InfoSend(string message) 
+        public Task InfoSend(string jsonMessage) 
         {
-            return Clients.All.InvokeAsync("onInfoSend", message);
+            var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
+            if (json.Command == "Info")
+            {
+                return Clients.All.InvokeAsync("onInfoSend", json.Description);
+            }
+            
+            return Task.FromResult<object>(null); //ingenting händer
         }
 
         //Ta bort student från waiting list - digimaster
-        public Task DeleteWaitingListItem(string alias) 
+        public Task DeleteWaitingListItem(string jsonMessage) 
         {
-            Problem problem = waitingList.SingleOrDefault(p => p.Alias == alias);
-            if (problem != null)
+            ProtocolMessage json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
+            if (json.Command == "Delete")
             {
-                waitingList.Remove(problem);
+                ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias);
+                if (problem != null)
+                {
+                    waitingList.Remove(problem);
+                }
+                string jsonList = JsonConvert.SerializeObject(waitingList);
+                return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
             }
-            string json = JsonConvert.SerializeObject(waitingList);
-            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
+
+            return Task.FromResult<object>(null); //ingenting händer
         }
 
         //Skicka meddelande i chatten - digistudent
-        public Task ChatSend(string message) 
+        public Task ChatSend(string jsonMessage) 
         {
-            return Clients.All.InvokeAsync("onChatSend", message);
+            var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
+            if (json.Command == "Message")
+            {
+                repository.SaveChatToDigiBase(json);
+                string send = $"{json.Alias}: {json.Description}";
+                return Clients.All.InvokeAsync("onChatSend", send);
+            }
+
+            return Task.FromResult<object>(null); //ingenting händer
         }
 
         //Lägga till sig på listan - digistudent
         public Task AddWaitingListItem(string jsonString) 
         {
-            var jsonObj = JsonConvert.DeserializeObject<Problem>(jsonString);
-            if ((waitingList.SingleOrDefault(p => p.Alias == jsonObj.Alias)) == null)
+            var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonString);
+            if (json.Command == "Add")
             {
-                waitingList.Add(jsonObj);
+                if ((waitingList.SingleOrDefault(p => p.Alias == json.Alias)) == null)
+                {
+                    waitingList.Add(
+                        new ProblemVM
+                        {
+                            Alias = json.Alias,
+                            Description = json.Description,
+                            Location = json.Location
+                        }
+                        );
+
+                    repository.SaveProblemToDigiBase(json);
+                    string jsonList = JsonConvert.SerializeObject(waitingList);
+                    return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
+                }
             }
 
-            string json = JsonConvert.SerializeObject(waitingList);
-            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
+            return Task.FromResult<object>(null); //ingenting händer
         }
 
         //Ta bort sig själv på listan - digistudent
-        public Task RemoveSelfFromWaitingList(string alias) 
+        public Task RemoveSelfFromWaitingList(string jsonString) 
         {
-            
-            Problem problem = waitingList.SingleOrDefault(p => p.Alias == alias);
-
-            if (problem != null)
+            var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonString);
+            if(json.Command == "Remove")
             {
-                waitingList.Remove(problem);
+                ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias);
+
+                if (problem != null)
+                {
+                    waitingList.Remove(problem);
+                }
+                string jsonList = JsonConvert.SerializeObject(waitingList);
+                return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
             }
-            string json = JsonConvert.SerializeObject(waitingList);
-            return Clients.All.InvokeAsync("onUpdateWaitingListItem", json);
-       
+
+            return Task.FromResult<object>(null); //ingenting händer
         }
     }
 }

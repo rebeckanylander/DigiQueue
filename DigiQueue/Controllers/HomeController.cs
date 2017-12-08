@@ -24,12 +24,14 @@ namespace DigiQueue.Controllers
 
         public async Task<IActionResult> Index()
         {
+            string user = repository.GetUsername(HttpContext.User);
+
             var model = new HomeIndexVM
             {
                 LoggedIn = User.Identity.IsAuthenticated,
                 DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
                 CreateClassroom = new HomeIndexCreateClassroomVM(),
-                DigiMaster = new HomeIndexLoginVM()
+                DigiMaster = new HomeIndexLoginVM { Username = user }
             };
 
             return View(model);
