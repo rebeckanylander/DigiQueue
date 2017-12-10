@@ -74,7 +74,7 @@ namespace DigiQueue.Models.Repositories
             Message message = new Message
             {
                 Alias = json.Alias,
-                ClassroomId = json.ClassroomId,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.Alias).Id,
                 Date = DateTime.Now,
                 Content = json.Description
             };
@@ -87,7 +87,7 @@ namespace DigiQueue.Models.Repositories
             Problem problem = new Problem
             {
                 Alias = json.Alias,
-                ClassroomId = json.ClassroomId,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.Alias).Id,
                 Date = json.Date,
                 Description = json.Description,
                 Type = (int)json.PType
