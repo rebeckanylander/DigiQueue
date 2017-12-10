@@ -3,10 +3,12 @@
 }
 
 @model ClassroomDigiStudentVM
+@* Ljud för notification *@
 
 <center><h1>@Model.Classroom.Name</h1> </center>
 <div id="alias" hidden>@Model.Alias</div>
-
+<audio id="notification" src="~/audio/capisci.mp3">
+</audio>
     <div class="containerClassroom">
 
         @Html.Partial("_StudentProblemBox")
@@ -28,7 +30,8 @@
                 locationText: $("#locationText"),
                 descriptionText: $("#descriptionText"),
                 infoBox: $("#infoBox"),
-                waitingList: $("#waitingList")
+                waitingList: $("#waitingList"),
+                notification: $("#notification")[0]
             }
 
             let digiFunctions = {
@@ -48,8 +51,13 @@
                 connection.start().then(function () { connection.invoke(digiFunctions.GetWaitingList); });
 
                 digiUi.chatBoxButton.click(() => {
-                    let message = digiUi.alias.text() + ": " + digiUi.messageBox.val();
-                    connection.invoke(digiFunctions.ChatSend, message);
+                    let message = {
+                        "alias": digiUi.alias.text(),
+                        //"location": digiUi.locationText.val(),
+                        "description": digiUi.messageBox.val(),
+                        "command": "Message"
+                    }
+                    connection.invoke(digiFunctions.ChatSend, JSON.stringify(message));
                     digiUi.messageBox.val("");
                 });
 
@@ -64,13 +72,20 @@
                         let message = {
                             "alias": digiUi.alias.text(),
                             "location": digiUi.locationText.val(),
-                            "description": digiUi.descriptionText.val()
+                            "description": digiUi.descriptionText.val(),
+                            "command": "Add"
                         }
                         connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
                     } else //Delete
                     {
+                        let message = {
+                            "alias": digiUi.alias.text(),
+                            "location": digiUi.locationText.val(),
+                            "description": digiUi.descriptionText.val(),
+                            "command": "Remove"
+                        }
                         digiUi.problemButton.text("Add");
-                        connection.invoke(digiFunctions.RemoveSelfFromWaitingList, digiUi.alias.text());
+                        connection.invoke(digiFunctions.RemoveSelfFromWaitingList, JSON.stringify(message));
                     }
                 });
 
@@ -85,7 +100,8 @@
                 connection.on(digiFunctions.onInfoSend, data => {
                     digiUi.infoBox.append(data + "\n");
                     digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
-                    alert('Ny info!!!!\n'+data);
+                    digiUi.notification.play();
+                    alert('Ny info!!!!\n' + data);
                 });
 
                 connection.on(digiFunctions.onUpdateInfoBox, data => {

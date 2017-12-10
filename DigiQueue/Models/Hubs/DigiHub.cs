@@ -60,7 +60,7 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
             if (json.Command == "Message")
             {
-                repository.SaveChatToDigiBase(json);
+                //repository.SaveChatToDigiBase(json);
                 string send = $"{json.Alias}: {json.Description}";
                 return Clients.All.InvokeAsync("onChatSend", send);
             }
@@ -85,7 +85,7 @@ namespace DigiQueue.Models.Hubs
                         }
                         );
 
-                    repository.SaveProblemToDigiBase(json);
+                    //repository.SaveProblemToDigiBase(json);
                     string jsonList = JsonConvert.SerializeObject(waitingList);
                     return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
                 }

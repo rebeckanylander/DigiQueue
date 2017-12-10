@@ -75,7 +75,7 @@ namespace DigiQueue.Models.Repositories
             {
                 Alias = json.Alias,
                 ClassroomId = json.ClassroomId,
-                Date = json.Date,
+                Date = DateTime.Now,
                 Content = json.Description
             };
             context.Message.Add(message);

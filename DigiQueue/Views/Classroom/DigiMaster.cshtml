@@ -38,10 +38,14 @@
             function () {
                 let connection = new signalR.HubConnection('/digihub');
                 connection.start().then(function () { connection.invoke(digiFunctions.GetWaitingList); });
+
                 digiUi.sendInfoButton.click(
                     function () {
-                        let message = digiUi.teacherMessageBox.val();
-                        connection.invoke(digiFunctions.InfoSend, message);
+                        let message = {
+                            "description": digiUi.teacherMessageBox.val(),
+                            "command": "Info"
+                        }
+                        connection.invoke(digiFunctions.InfoSend, JSON.stringify(message));
                     });
 
                 connection.on(digiFunctions.onInfoSend, data => {
@@ -52,8 +56,12 @@
 
                 digiUi.removeFromWaitingList.click(() => {
                     let aliasToRemove = digiUi.teacherWaitingList.val(); //selecteditem;
+                    let message = {
+                        "alias": aliasToRemove,
+                        "command": "Delete"
+                    }
                     if (aliasToRemove != null) {
-                        connection.invoke(digiFunctions.DeleteWaitingListItem, aliasToRemove);
+                        connection.invoke(digiFunctions.DeleteWaitingListItem, JSON.stringify(message));
                     }
                 });
 
