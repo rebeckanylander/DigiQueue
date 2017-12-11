@@ -7,8 +7,7 @@ using DigiQueue.Models.Viewmodels;
 using DigiQueue.Models.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Authorization;
 
 namespace DigiQueue.Controllers
 {
@@ -26,6 +25,8 @@ namespace DigiQueue.Controllers
         {
             string user = repository.GetUsername(HttpContext.User);
 
+            //IdentityResult result = await repository.CreateUser("admin2", "P@ssword123");
+
             var model = new HomeIndexVM
             {
                 LoggedIn = User.Identity.IsAuthenticated,
@@ -40,8 +41,7 @@ namespace DigiQueue.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(HomeIndexLoginVM viewModel)
         {
-            //var result =
-            //    await userManager.CreateAsync(new IdentityUser("admin"), "P@ssword123");
+            
 
             if (!ModelState.IsValid)
             {
@@ -73,9 +73,11 @@ namespace DigiQueue.Controllers
                 return RedirectToAction(nameof(Index), model);
             }
 
-            return RedirectToAction(nameof(Index)); 
+            var id = await repository.GetUserAsync(viewModel.Username);
+            return RedirectToAction("DigiMaster", "Classroom", new { id = repository.GetClassroomId(id) }); 
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateClassroom(HomeIndexCreateClassroomVM viewModel)
         {

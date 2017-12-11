@@ -7,6 +7,7 @@
 <h1>Klassrum</h1>
 <label>@Model.Classroom.Name</label>
 <div class="containerClassroom">
+    @Html.Partial("_loggedInList")
     @Html.Partial("_TeacherChatBox")
     @Html.Partial("_TeacherWaitingList")
     @Html.Partial("_TeacherInfoBox")
@@ -37,7 +38,16 @@
         $(document).ready(
             function () {
                 let connection = new signalR.HubConnection('/digihub');
-                connection.start().then(function () { connection.invoke(digiFunctions.GetWaitingList); });
+                connection.start().then(function () {
+                    connection.invoke(digiFunctions.GetWaitingList);
+                    let message =
+                        {
+                            "alias": "Digimaster",
+                            "command": "LogIn"
+                            //"classroomId": $("#classroomid").text()
+                        }
+                    connection.invoke('GetLoggedInList', JSON.stringify(message));
+                });
 
                 digiUi.sendInfoButton.click(
                     function () {
@@ -84,6 +94,15 @@
                 connection.on(digiFunctions.onChatSend, data => {
                     digiUi.chatBox.append(data + "\n");
                     digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
+                });
+
+                connection.on('onLogIn', data => {
+                    $("#loggedInList").text("");
+                    var jsonObj = JSON.parse(data);
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        $("#loggedInList").append(jsonObj[i] + "\n");
+                    }
+                    $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
                 });
             }
         );

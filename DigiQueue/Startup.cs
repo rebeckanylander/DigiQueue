@@ -43,7 +43,9 @@ namespace DigiQueue
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o => o.LoginPath = "/Home/Login");
+                .AddCookie(o => o.LoginPath = "/home/index");
+
+            services.ConfigureApplicationCookie(o => o.LoginPath = "/home/index");
 
             services.AddTransient<IRepository, DigiBaseRepository>();
             services.AddSignalR();
@@ -57,6 +59,12 @@ namespace DigiQueue
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error/ServerError");
+            }
+
+            app.UseStatusCodePagesWithRedirects("/Error/HttpError/{0}");
 
             app.UseAuthentication();
             app.UseStaticFiles();

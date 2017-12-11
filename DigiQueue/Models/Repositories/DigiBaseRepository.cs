@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DigiQueue.Models.Repositories
 {
     public class DigiBaseRepository : IRepository
     {
+        IdentityDbContext identityContext;
         DigibaseContext context;
         UserManager<IdentityUser> userManager;
         SignInManager<IdentityUser> signInManager;
@@ -22,12 +24,14 @@ namespace DigiQueue.Models.Repositories
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             RoleManager<IdentityRole> roleManager,
-            DigibaseContext context)
+            DigibaseContext context,
+            IdentityDbContext identityContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.context = context;
+            this.identityContext = identityContext;
         }
 
         public async Task<ClassroomDigiMasterVM> CreateClassroom(string name, string id)
@@ -36,6 +40,11 @@ namespace DigiQueue.Models.Repositories
             await context.SaveChangesAsync();
 
             return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.Name == name && c.AspUserId == id) };
+        }
+
+        public async Task<IdentityResult> CreateUser(string username, string password)
+        {
+            return await userManager.CreateAsync(new IdentityUser(username), password);
         }
 
         public async Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom)
@@ -51,6 +60,18 @@ namespace DigiQueue.Models.Repositories
         public async Task<Classroom[]> GetAllClassrooms()
         {
             return await context.Classroom.ToArrayAsync();
+        }
+
+        public int GetClassroomId(string id)
+        {
+            var classroomid = context.Classroom.Single(c => c.AspUserId == id).Id;
+            return classroomid;
+        }
+
+        public async Task<string> GetUserAsync(string username)
+        {
+            var user = await identityContext.Users.SingleAsync(o => o.NormalizedUserName.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            return user.Id;
         }
 
         public string GetUserId(ClaimsPrincipal claimsPrincipal)
@@ -74,7 +95,7 @@ namespace DigiQueue.Models.Repositories
             Message message = new Message
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.Alias).Id,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomId).Id,
                 Date = DateTime.Now,
                 Content = json.Description
             };
@@ -87,8 +108,8 @@ namespace DigiQueue.Models.Repositories
             Problem problem = new Problem
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.Alias).Id,
-                Date = json.Date,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomId).Id,
+                Date = DateTime.Now,
                 Description = json.Description,
                 Type = (int)json.PType
             };

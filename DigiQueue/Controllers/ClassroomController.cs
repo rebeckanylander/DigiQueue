@@ -20,6 +20,7 @@ namespace DigiQueue.Controllers
             this.repository = repository;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> DigiMaster(int id)
         {

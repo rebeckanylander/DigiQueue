@@ -5,114 +5,136 @@
 @model ClassroomDigiStudentVM
 @* Ljud för notification *@
 
-<center><h1>@Model.Classroom.Name</h1> </center>
+<center><div id="classroomid">@Model.Classroom.Name</div> </center>
 <div id="alias" hidden>@Model.Alias</div>
-<audio id="notification" src="~/audio/capisci.mp3">
-</audio>
-    <div class="containerClassroom">
+<audio id="notification" src="~/audio/capisci.mp3"></audio>
+<div class="containerClassroom">
 
-        @Html.Partial("_StudentProblemBox")
-        @Html.Partial("_StudentWaitingList")
-        @Html.Partial("_StudentChatbox")
-        @Html.Partial("_StudentInfoboxFromTeacher")
+    @Html.Partial("_loggedInList")
+    @Html.Partial("_StudentProblemBox")
+    @Html.Partial("_StudentWaitingList")
+    @Html.Partial("_StudentChatbox")
+    @Html.Partial("_StudentInfoboxFromTeacher")
 
-    </div>
-    @section scriptsSection
-        {
-        <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
-        <script>
-            let digiUi = {
-                chatBoxButton: $("#chatBoxButton"),
-                alias: $("#alias"),
-                messageBox: $("#messageBox"),
-                chatBox: $("#chatBox"),
-                problemButton: $("#problemButton"),
-                locationText: $("#locationText"),
-                descriptionText: $("#descriptionText"),
-                infoBox: $("#infoBox"),
-                waitingList: $("#waitingList"),
-                notification: $("#notification")[0]
-            }
+</div>
+@section scriptsSection
+    {
+    <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <script>
+        let digiUi = {
+            chatBoxButton: $("#chatBoxButton"),
+            alias: $("#alias"),
+            messageBox: $("#messageBox"),
+            chatBox: $("#chatBox"),
+            problemButton: $("#problemButton"),
+            locationText: $("#locationText"),
+            descriptionText: $("#descriptionText"),
+            infoBox: $("#infoBox"),
+            waitingList: $("#waitingList"),
+            notification: $("#notification")[0]
+        }
 
-            let digiFunctions = {
-                ChatSend: 'ChatSend',
-                onChatSend: 'onChatSend',
-                onUpdateInfoBox: 'onUpdateInfoBox',
-                RemoveSelfFromWaitingList: 'RemoveSelfFromWaitingList',
-                GetWaitingList: 'GetWaitingList',
-                onUpdateWaitingListItem: 'onUpdateWaitingListItem',
-                AddWaitingListItem: 'AddWaitingListItem',
-                onInfoSend: 'onInfoSend'
-                
-            }
+        let digiFunctions = {
+            ChatSend: 'ChatSend',
+            onChatSend: 'onChatSend',
+            onUpdateInfoBox: 'onUpdateInfoBox',
+            RemoveSelfFromWaitingList: 'RemoveSelfFromWaitingList',
+            GetWaitingList: 'GetWaitingList',
+            onUpdateWaitingListItem: 'onUpdateWaitingListItem',
+            AddWaitingListItem: 'AddWaitingListItem',
+            onInfoSend: 'onInfoSend'
 
-            $(document).ready(function () {
-                let connection = new signalR.HubConnection('/digihub');
-                connection.start().then(function () { connection.invoke(digiFunctions.GetWaitingList); });
+        }
 
-                digiUi.chatBoxButton.click(() => {
-                    let message = {
-                        "alias": digiUi.alias.text(),
-                        //"location": digiUi.locationText.val(),
-                        "description": digiUi.messageBox.val(),
-                        "command": "Message"
-                    }
-                    connection.invoke(digiFunctions.ChatSend, JSON.stringify(message));
-                    digiUi.messageBox.val("");
-                });
-
-                connection.on(digiFunctions.onChatSend, data => {
-                    digiUi.chatBox.append(data + "\n");
-                    digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
-                });
-
-                digiUi.problemButton.click(() => {
-                    if (digiUi.problemButton.text() == "Add") { //Add
-                        digiUi.problemButton.text("Delete");
-                        let message = {
-                            "alias": digiUi.alias.text(),
-                            "location": digiUi.locationText.val(),
-                            "description": digiUi.descriptionText.val(),
-                            "command": "Add"
-                        }
-                        connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
-                    } else //Delete
+        $(document).ready(function () {
+            let connection = new signalR.HubConnection('/digihub');
+            connection.start().then(function () {
+                connection.invoke(digiFunctions.GetWaitingList);
+                let message =
                     {
-                        let message = {
-                            "alias": digiUi.alias.text(),
-                            "location": digiUi.locationText.val(),
-                            "description": digiUi.descriptionText.val(),
-                            "command": "Remove"
-                        }
-                        digiUi.problemButton.text("Add");
-                        connection.invoke(digiFunctions.RemoveSelfFromWaitingList, JSON.stringify(message));
+                        "alias": digiUi.alias.text(),
+                        "command": "LogIn"
+                        //"classroomId": $("#classroomid").text()
                     }
-                });
-
-                connection.on(digiFunctions.onUpdateWaitingListItem, data => {
-                    digiUi.waitingList.text("");
-                    var jsonObj = JSON.parse(data);
-                    for (var i = 0; i < jsonObj.length; i++) {
-                        digiUi.waitingList.append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
-                    }
-                });
-
-                connection.on(digiFunctions.onInfoSend, data => {
-                    digiUi.infoBox.append(data + "\n");
-                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
-                    digiUi.notification.play();
-                    alert('Ny info!!!!\n' + data);
-                });
-
-                connection.on(digiFunctions.onUpdateInfoBox, data => {
-                    digiUi.infoBox.val("");
-                    var jsonObj = JSON.parse(data);
-                    for (var i = 0; i < jsonObj.length; i++) {
-                        digiUi.infoBox.append(jsonObj[i] + "\n");
-                    }
-                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
-                });
+                connection.invoke('GetLoggedInList', JSON.stringify(message));
             });
 
-        </script>
-    }
+
+            digiUi.chatBoxButton.click(() => {
+                let message = {
+                    "alias": digiUi.alias.text(),
+                    "classroomId": $("#classroomid").text(),
+                    //"location": digiUi.locationText.val(),
+                    "description": digiUi.messageBox.val(),
+                    "command": "Message"
+                }
+                connection.invoke(digiFunctions.ChatSend, JSON.stringify(message));
+                digiUi.messageBox.val("");
+            });
+
+            connection.on(digiFunctions.onChatSend, data => {
+                digiUi.chatBox.append(data + "\n");
+                digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
+            });
+            
+
+            digiUi.problemButton.click(() => {
+                if (digiUi.problemButton.text() == "Add") { //Add
+                    digiUi.problemButton.text("Delete");
+                    let message = {
+                        "alias": digiUi.alias.text(),
+                        "location": digiUi.locationText.val(),
+                        "description": digiUi.descriptionText.val(),
+                        "command": "Add",
+                        "classroomId": $("#classroomid").text(),
+                        "ptype": $('#PType').find(":selected").val()
+                    }
+                    connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
+                } else //Delete
+                {
+                    let message = {
+                        "alias": digiUi.alias.text(),
+                        "location": digiUi.locationText.val(),
+                        "description": digiUi.descriptionText.val(),
+                        "command": "Remove"
+                    }
+                    digiUi.problemButton.text("Add");
+                    connection.invoke(digiFunctions.RemoveSelfFromWaitingList, JSON.stringify(message));
+                }
+            });
+
+            connection.on(digiFunctions.onUpdateWaitingListItem, data => {
+                digiUi.waitingList.text("");
+                var jsonObj = JSON.parse(data);
+                for (var i = 0; i < jsonObj.length; i++) {
+                    digiUi.waitingList.append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
+                }
+            });
+
+            connection.on(digiFunctions.onInfoSend, data => {
+                digiUi.infoBox.append(data + "\n");
+                digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
+                digiUi.notification.play();
+                alert('Ny info!!!!\n' + data);
+            });
+
+            connection.on('onLogIn', data => {
+                $("#loggedInList").text("");
+                var jsonObj = JSON.parse(data);
+                for (var i = 0; i < jsonObj.length; i++) {
+                    $("#loggedInList").append(jsonObj[i] + "\n");
+                }
+                $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
+            });
+
+            connection.on(digiFunctions.onUpdateInfoBox, data => {
+                digiUi.infoBox.val("");
+                var jsonObj = JSON.parse(data);
+                for (var i = 0; i < jsonObj.length; i++) {
+                    digiUi.infoBox.append(jsonObj[i] + "\n");
+                }
+                digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
+            });
+        });
+    </script>
+}

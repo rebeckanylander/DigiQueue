@@ -18,8 +18,11 @@ namespace DigiQueue.Models.Repositories
         Task<Classroom[]> GetAllClassrooms();
         Task<SignInResult> SignIn(string username, string password);
         string GetUserId(ClaimsPrincipal claimsPrincipal);
+        Task<IdentityResult> CreateUser(string username, string password);
+        Task<string> GetUserAsync(string username);
         string GetUsername(ClaimsPrincipal claimsPrincipal);
         void SaveChatToDigiBase(ProtocolMessage json);
         void SaveProblemToDigiBase(ProtocolMessage json);
+        int GetClassroomId(string id);
     }
 }
