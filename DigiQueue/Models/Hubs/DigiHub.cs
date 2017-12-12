@@ -12,7 +12,7 @@ namespace DigiQueue.Models.Hubs
     {
         IRepository repository;
         static List<ProblemVM> waitingList = new List<ProblemVM>();
-        static Dictionary<string,string> loggedInList = new Dictionary<string, string>();
+        static Dictionary<string, LoggedInVM> loggedInList = new Dictionary<string, LoggedInVM>();
 
         public DigiHub(IRepository repository)
         {
@@ -24,18 +24,19 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
             if (json.Command == "LogIn")
             {
-                if ((loggedInList.Values.SingleOrDefault(p => p == json.Alias)) == null)
+                if ((loggedInList.Values.SingleOrDefault(p => p.Alias == json.Alias && p.ClassroomName == json.ClassroomId)) == null)
                 {
-                    loggedInList.Add(Context.ConnectionId, json.Alias);
+                    Groups.AddAsync(Context.ConnectionId, json.ClassroomId);
+                    loggedInList.Add(Context.ConnectionId, new LoggedInVM { Alias = json.Alias, ClassroomName = json.ClassroomId});
                 }
             }
-            var jsonList = JsonConvert.SerializeObject(loggedInList.Values);
-            return Clients.All.InvokeAsync("onLogIn", jsonList);
+            var jsonList = JsonConvert.SerializeObject(loggedInList.Values.Where(c=> c.ClassroomName == json.ClassroomId));
+            return Clients.Group(json.ClassroomId).InvokeAsync("onLogIn", jsonList);
         }
 
-        public Task GetWaitingList()
+        public Task GetWaitingList(string classroomName)
         {
-            var jsonList = JsonConvert.SerializeObject(waitingList);
+            var jsonList = JsonConvert.SerializeObject(waitingList.Where(c => c.ClassroomName == classroomName));
             return Clients.Client(Context.ConnectionId).InvokeAsync("onUpdateWaitingListItem", jsonList);
         }
 
@@ -45,7 +46,7 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
             if (json.Command == "Info")
             {
-                return Clients.All.InvokeAsync("onInfoSend", json.Description);
+                return Clients.Group(json.ClassroomId).InvokeAsync("onInfoSend", json.Description);
             }
 
             return Task.FromResult<object>(null); //ingenting händer
@@ -63,7 +64,7 @@ namespace DigiQueue.Models.Hubs
                     waitingList.Remove(problem);
                 }
                 string jsonList = JsonConvert.SerializeObject(waitingList);
-                return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
+                return Clients.Group(json.ClassroomId).InvokeAsync("onUpdateWaitingListItem", jsonList);
             }
 
             return Task.FromResult<object>(null); //ingenting händer
@@ -77,7 +78,7 @@ namespace DigiQueue.Models.Hubs
             {
                 repository.SaveChatToDigiBase(json);
                 string send = $"{json.Alias}: {json.Description}";
-                return Clients.All.InvokeAsync("onChatSend", send);
+                return Clients.Group(json.ClassroomId).InvokeAsync("onChatSend", send);
             }
 
             return Task.FromResult<object>(null); //ingenting händer
@@ -89,20 +90,21 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonString);
             if (json.Command == "Add")
             {
-                if ((waitingList.SingleOrDefault(p => p.Alias == json.Alias)) == null)
+                if ((waitingList.SingleOrDefault(p => p.Alias == json.Alias && p.ClassroomName == json.ClassroomId)) == null)
                 {
                     waitingList.Add(
                         new ProblemVM
                         {
                             Alias = json.Alias,
                             Description = json.Description,
-                            Location = json.Location
+                            Location = json.Location,
+                            ClassroomName = json.ClassroomId
                         }
                         );
 
                     repository.SaveProblemToDigiBase(json);
-                    string jsonList = JsonConvert.SerializeObject(waitingList);
-                    return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
+                    string jsonList = JsonConvert.SerializeObject(waitingList.Where(c => c.ClassroomName == json.ClassroomId));
+                    return Clients.Group(json.ClassroomId).InvokeAsync("onUpdateWaitingListItem", jsonList);
                 }
             }
 
@@ -115,14 +117,14 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonString);
             if (json.Command == "Remove")
             {
-                ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias);
+                ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias && p.ClassroomName == json.ClassroomId);
 
                 if (problem != null)
                 {
                     waitingList.Remove(problem);
                 }
-                string jsonList = JsonConvert.SerializeObject(waitingList);
-                return Clients.All.InvokeAsync("onUpdateWaitingListItem", jsonList);
+                string jsonList = JsonConvert.SerializeObject(waitingList.Where(c => c.ClassroomName == json.ClassroomId));
+                return Clients.Group(json.ClassroomId).InvokeAsync("onUpdateWaitingListItem", jsonList);
             }
 
             return Task.FromResult<object>(null); //ingenting händer
@@ -130,12 +132,15 @@ namespace DigiQueue.Models.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            var classroomName = loggedInList.Single(x => x.Key == Context.ConnectionId).Value.ClassroomName;
             loggedInList.Remove(Context.ConnectionId);
+            Groups.RemoveAsync(Context.ConnectionId, classroomName);
             //waitingList.SingleOrDefault()
 
-            var jsonList = JsonConvert.SerializeObject(loggedInList.Values);
-            Clients.All.InvokeAsync("onLogIn", jsonList);
+            var jsonList = JsonConvert.SerializeObject(loggedInList.Values.Where(c => c.ClassroomName == classroomName));
+            Clients.Group(classroomName).InvokeAsync("onLogIn", jsonList);
 
+            
             return base.OnDisconnectedAsync(exception);
         }
         

@@ -5,7 +5,7 @@
 @model ClassroomDigiMasterVM
 
 <h1>Klassrum</h1>
-<label>@Model.Classroom.Name</label>
+<div id="classroomid">@Model.Classroom.Name</div>
 <div class="containerClassroom">
     @Html.Partial("_loggedInList")
     @Html.Partial("_TeacherChatBox")
@@ -39,12 +39,12 @@
             function () {
                 let connection = new signalR.HubConnection('/digihub');
                 connection.start().then(function () {
-                    connection.invoke(digiFunctions.GetWaitingList);
+                    connection.invoke(digiFunctions.GetWaitingList, $("#classroomid").text());
                     let message =
                         {
                             "alias": "Digimaster",
-                            "command": "LogIn"
-                            //"classroomId": $("#classroomid").text()
+                            "command": "LogIn",
+                            "classroomId": $("#classroomid").text()
                         }
                     connection.invoke('GetLoggedInList', JSON.stringify(message));
                 });
@@ -53,7 +53,8 @@
                     function () {
                         let message = {
                             "description": digiUi.teacherMessageBox.val(),
-                            "command": "Info"
+                            "command": "Info",
+                            "classroomId": $("#classroomid").text()
                         }
                         connection.invoke(digiFunctions.InfoSend, JSON.stringify(message));
                     });
@@ -68,7 +69,8 @@
                     let aliasToRemove = digiUi.teacherWaitingList.val(); //selecteditem;
                     let message = {
                         "alias": aliasToRemove,
-                        "command": "Delete"
+                        "command": "Delete",
+                        "classroomId": $("#classroomid").text()
                     }
                     if (aliasToRemove != null) {
                         connection.invoke(digiFunctions.DeleteWaitingListItem, JSON.stringify(message));
@@ -100,7 +102,7 @@
                     $("#loggedInList").text("");
                     var jsonObj = JSON.parse(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        $("#loggedInList").append(jsonObj[i] + "\n");
+                        $("#loggedInList").append(jsonObj[i].Alias + "\n");
                     }
                     $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
                 });

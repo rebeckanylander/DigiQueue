@@ -7,8 +7,7 @@ namespace DigiQueue.Models
 {
     public class LoggedInVM
     {
-        public int ClassroomId { get; set; }
-        public string ConnectionId { get; set; }
+        public string ClassroomName { get; set; }
         public string Alias { get; set; }
 
     }
