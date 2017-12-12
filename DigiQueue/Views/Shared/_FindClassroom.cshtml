@@ -3,14 +3,8 @@
     <input type="text" asp-for="Alias" placeholder="Alias"/>
     <br />
     <span asp-validation-for="Alias"></span>
-
-
     <br />
-
-    @Html.DropDownList("DropDownListKlasser",
-                    new SelectList(Model.Classrooms, "Id", "Name"))
-
-
+    @Html.DropDownList("DropDownListKlasser", new SelectList(Model.Classrooms, "Id", "Name"))
     <br />
     <input type="submit" value="Gå in i klassrummet"/>
 </form>
