@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using DigiQueue.Models.Repositories;
 using DigiQueue.Models.Entities;
+using Newtonsoft.Json;
 
 namespace DigiQueue.Controllers
 {
@@ -19,6 +20,13 @@ namespace DigiQueue.Controllers
         {
             this.repository = repository;
         }
+
+        [Authorize]
+        public IActionResult Stats()
+        {
+            return View();
+        }
+
 
         [Authorize]
         [HttpGet]
@@ -36,6 +44,16 @@ namespace DigiQueue.Controllers
 
             ClassroomDigiStudentVM model = new ClassroomDigiStudentVM { Alias = alias, Classroom = classroom.Classroom };
             return View(model);
+        }
+
+        public string GetTime()
+        {
+            return JsonConvert.SerializeObject(repository.GetTimeArray());
+        }
+
+        public string GetLanguage()
+        {
+            return JsonConvert.SerializeObject(repository.GetLanguageArray());
         }
     }
 }

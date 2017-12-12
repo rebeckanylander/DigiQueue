@@ -15,7 +15,7 @@ namespace DigiQueue.Models.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Server=tcp:digibaseserver.database.windows.net,1433;Initial Catalog=DigiBase;Persist Security Info=False;User ID=digiadmin;Password=digipass_2017;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30");
+                optionsBuilder.UseSqlServer(@"Server=tcp:digibaseserver.database.windows.net,1433;Initial Catalog=DigiBase;Persist Security Info=False;User ID=digiadmin;Password=digipass_2017;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -69,7 +69,7 @@ namespace DigiQueue.Models.Entities
                     .WithMany(p => p.Problem)
                     .HasForeignKey(d => d.ClassroomId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Problem__Classro__6FE99F9F");
+                    .HasConstraintName("FK__Problem__Classro__7B5B524B");
             });
         }
     }

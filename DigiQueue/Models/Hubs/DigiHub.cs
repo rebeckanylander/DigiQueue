@@ -61,6 +61,7 @@ namespace DigiQueue.Models.Hubs
                 ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias);
                 if (problem != null)
                 {
+                    repository.EndProblem(json.Alias, json.ClassroomId);
                     waitingList.Remove(problem);
                 }
                 string jsonList = JsonConvert.SerializeObject(waitingList);
@@ -121,6 +122,7 @@ namespace DigiQueue.Models.Hubs
 
                 if (problem != null)
                 {
+                    repository.EndProblem(json.Alias, json.ClassroomId);
                     waitingList.Remove(problem);
                 }
                 string jsonList = JsonConvert.SerializeObject(waitingList.Where(c => c.ClassroomName == json.ClassroomId));

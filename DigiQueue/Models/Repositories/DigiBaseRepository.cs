@@ -47,6 +47,13 @@ namespace DigiQueue.Models.Repositories
             return await userManager.CreateAsync(new IdentityUser(username), password);
         }
 
+        public void EndProblem(string alias, string classroomId)
+        {
+            var problem = context.Problem.Last(p => p.Alias == alias && p.ClassroomId == context.Classroom.Single(c => c.Name == classroomId).Id);
+            problem.EndDate = DateTime.Now;
+            context.SaveChanges();
+        }
+
         public async Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom)
         {
             return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c == classroom) };
@@ -78,6 +85,34 @@ namespace DigiQueue.Models.Repositories
         {
             var classroomName = context.Classroom.Single(c => c.AspUserId == user).Name;
             return classroomName;
+        }
+
+        public int[] GetLanguageArray()
+        {
+            List<int> list = new List<int>();
+            var lister = context.Problem.Select(x => x.Type).ToList();
+            for (int i = 0; i < 7; i++)
+            {
+                list.Add(lister.Count(x => x == i));
+            }
+            return list.ToArray();
+        }
+
+        public int[] GetTimeArray()
+        {
+            var lister = context.Problem.Where(x => x.EndDate != null).ToList();
+            var list = lister.Select(x => (TimeSpan)(x.EndDate - x.StartDate));
+            var lis = list.Select(x => x.Minutes);
+
+            return new int[] {
+                lis.Count(x => x < 5),
+                lis.Count(x => x >= 5 && x < 15),
+                lis.Count(x => x >= 15 && x < 30),
+                lis.Count(x => x >= 30 && x < 60),
+                lis.Count(x => x >= 60 && x < 120),
+                lis.Count(x => x >= 120),
+                context.Problem.Count(x => x.EndDate == null)
+            };
         }
 
         public async Task<string> GetUserAsync(string username)
@@ -121,7 +156,7 @@ namespace DigiQueue.Models.Repositories
             {
                 Alias = json.Alias,
                 ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomId).Id,
-                Date = DateTime.Now,
+                StartDate = DateTime.Now,
                 Description = json.Description,
                 Type = (int)json.PType
             };
@@ -134,6 +169,11 @@ namespace DigiQueue.Models.Repositories
             return await signInManager.PasswordSignInAsync(
                 username, password, false, false);
 
+        }
+
+        public async Task SignOut()
+        {
+            await signInManager.SignOutAsync();
         }
     }
 }

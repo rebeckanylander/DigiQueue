@@ -227,5 +227,24 @@ namespace DigiQueue.Controllers
 
             return RedirectToAction("DigiMaster", "Classroom", new { id = await repository.GetClassroomIdByName(viewModel.OldClassroomName) });
         }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await repository.SignOut();
+
+            string user = repository.GetUsername(HttpContext.User);
+
+            var model = new HomeIndexVM
+            {
+                LoggedIn = User.Identity.IsAuthenticated,
+                DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
+                CreateClassroom = new HomeIndexCreateClassroomVM(),
+                DigiMaster = new HomeIndexLoginVM { Username = user },
+                Register = new AccountRegisterVM()
+            };
+
+            return RedirectToAction(nameof(Index), model);
+
+        }
     }
 }

@@ -6,6 +6,14 @@
 
 <h1>Klassrum</h1>
 <div id="classroomid">@Model.Classroom.Name</div>
+
+<form asp-controller="Home" asp-action="SignOut">
+
+    <input type="submit" value="Log Out" />
+
+</form>
+
+
 <div class="containerClassroom">
     @Html.Partial("_loggedInList")
     @Html.Partial("_TeacherChatBox")

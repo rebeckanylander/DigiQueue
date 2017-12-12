@@ -26,5 +26,9 @@ namespace DigiQueue.Models.Repositories
         int GetClassroomId(string id);
         Task<int> GetClassroomIdByName(string oldClassroomName);
         string GetClassroomNameByAspNetId(string user);
+        Task SignOut();
+        void EndProblem(string alias, string classroomId);
+        int[] GetTimeArray();
+        int[] GetLanguageArray();
     }
 }
