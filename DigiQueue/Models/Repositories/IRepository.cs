@@ -24,5 +24,6 @@ namespace DigiQueue.Models.Repositories
         void SaveChatToDigiBase(ProtocolMessage json);
         void SaveProblemToDigiBase(ProtocolMessage json);
         int GetClassroomId(string id);
+        Task<int> GetClassroomIdByName(string oldClassroomName);
     }
 }

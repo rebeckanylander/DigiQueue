@@ -1,0 +1,30 @@
+﻿@model AccountRegisterVM
+
+@{ViewBag.Title = "Register";}
+
+
+
+<h1>Log In</h1>
+<form asp-controller="Home" asp-action="Register">
+    <label asp-for="@Model.OldClassroomName" hidden></label>
+    <input asp-for="@Model.OldClassroomName" hidden/>
+
+    <label asp-for="@Model.Username"></label>
+    <input asp-for="@Model.Username" />
+    <span asp-validation-for="@Model.Username"></span>
+
+    <label asp-for="@Model.Password"></label>
+    <input asp-for="@Model.Password" />
+    <span asp-validation-for="@Model.Password"></span>
+
+    <label asp-for="@Model.ClassroomName"></label>
+    <input asp-for="@Model.ClassroomName" />
+    <span asp-validation-for="@Model.ClassroomName"></span>
+    <br />
+
+    <input type="submit" value="Register" />
+</form>
+
+@section scriptsSection {
+    @Html.Partial("ValidationScript")
+}

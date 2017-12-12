@@ -68,6 +68,12 @@ namespace DigiQueue.Models.Repositories
             return classroomid;
         }
 
+        public async Task<int> GetClassroomIdByName(string oldClassroomName)
+        {
+            var classroom = await context.Classroom.SingleAsync(c => c.Name == oldClassroomName);
+            return classroom.Id;
+        }
+
         public async Task<string> GetUserAsync(string username)
         {
             var user = await identityContext.Users.SingleAsync(o => o.NormalizedUserName.Equals(username, StringComparison.InvariantCultureIgnoreCase));

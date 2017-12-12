@@ -16,5 +16,11 @@ namespace DigiQueue.Models.Viewmodels
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Enter a password")]
         public string Password { get; set; }
+
+        [Display(Name = "Classroom name*")]
+        [Required(ErrorMessage = "Enter a classroom name")]
+        public string ClassroomName { get; set; }
+
+        public string OldClassroomName { get; set; }
     }
 }

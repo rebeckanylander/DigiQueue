@@ -146,5 +146,53 @@ namespace DigiQueue.Controllers
 
             return RedirectToAction("DigiStudent", "Classroom", new { alias = viewModel.Alias, classroomId = form });
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Register(string id)
+        {
+            var model = new AccountRegisterVM
+            {
+                OldClassroomName = id
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Register(AccountRegisterVM viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            if (!await repository.IsClassroomNameAvailable(viewModel.ClassroomName))
+            {
+                return View(viewModel);
+            }
+
+            var result = await repository.CreateUser(viewModel.Username, viewModel.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    if (error.Code.Contains("User"))
+                    {
+                        ModelState.AddModelError(nameof(AccountRegisterVM.Username), error.Description);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(AccountRegisterVM.Password), error.Description);
+                    }
+                }
+                return View(viewModel);
+            }
+
+            ClassroomDigiMasterVM modell = await repository.CreateClassroom(viewModel.ClassroomName, await repository.GetUserAsync(viewModel.Username));
+
+            return RedirectToAction("DigiMaster", "Classroom", new { id = await repository.GetClassroomIdByName(viewModel.OldClassroomName) });
+        }
     }
 }
