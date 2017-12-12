@@ -4,16 +4,16 @@
 
 
 <form asp-controller="Home" asp-action="Register">
-    <input asp-for="@Model.OldClassroomName" hidden/>
-
+    <input asp-for="@Model.OldClassroomName" type="hidden"/>
+    <br />
     <label asp-for="@Model.RegUsername"></label>
     <input asp-for="@Model.RegUsername" />
     <span asp-validation-for="@Model.RegUsername"></span>
-
+    <br />
     <label asp-for="@Model.RegPassword"></label>
     <input asp-for="@Model.RegPassword" />
     <span asp-validation-for="@Model.RegPassword"></span>
-
+    <br />
     <label asp-for="@Model.ClassroomName"></label>
     <input asp-for="@Model.ClassroomName" />
     <span asp-validation-for="@Model.ClassroomName"></span>
