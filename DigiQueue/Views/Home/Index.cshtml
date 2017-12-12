@@ -13,7 +13,8 @@
     <div id="createClassroomDiv" class="digidiv">
         @if (Model.LoggedIn)
         {
-            @Html.Partial("_CreateClassroom", Model.CreateClassroom)
+            //@Html.Partial("_CreateClassroom", Model.CreateClassroom)
+            @Html.Partial("Register", Model.Register)
         }
         else
         {

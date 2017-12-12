@@ -3,19 +3,16 @@
 @{ViewBag.Title = "Register";}
 
 
-
-<h1>Log In</h1>
 <form asp-controller="Home" asp-action="Register">
-    <label asp-for="@Model.OldClassroomName" hidden></label>
     <input asp-for="@Model.OldClassroomName" hidden/>
 
-    <label asp-for="@Model.Username"></label>
-    <input asp-for="@Model.Username" />
-    <span asp-validation-for="@Model.Username"></span>
+    <label asp-for="@Model.RegUsername"></label>
+    <input asp-for="@Model.RegUsername" />
+    <span asp-validation-for="@Model.RegUsername"></span>
 
-    <label asp-for="@Model.Password"></label>
-    <input asp-for="@Model.Password" />
-    <span asp-validation-for="@Model.Password"></span>
+    <label asp-for="@Model.RegPassword"></label>
+    <input asp-for="@Model.RegPassword" />
+    <span asp-validation-for="@Model.RegPassword"></span>
 
     <label asp-for="@Model.ClassroomName"></label>
     <input asp-for="@Model.ClassroomName" />

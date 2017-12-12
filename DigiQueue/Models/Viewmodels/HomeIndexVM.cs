@@ -11,5 +11,6 @@ namespace DigiQueue.Models.Viewmodels
         public HomeIndexFindClassroomVM DigiStudent { get; set; }
         public HomeIndexCreateClassroomVM CreateClassroom { get; set; }
         public bool LoggedIn { get; set; }
+        public AccountRegisterVM Register { get; set; }
     }
 }

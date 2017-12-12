@@ -10,12 +10,12 @@ namespace DigiQueue.Models.Viewmodels
     {
         [Display(Name = "Username*")]
         [Required(ErrorMessage = "Enter a username")]
-        public string Username { get; set; }
+        public string RegUsername { get; set; }
 
         [Display(Name = "Password*")]
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Enter a password")]
-        public string Password { get; set; }
+        public string RegPassword { get; set; }
 
         [Display(Name = "Classroom name*")]
         [Required(ErrorMessage = "Enter a classroom name")]

@@ -25,5 +25,6 @@ namespace DigiQueue.Models.Repositories
         void SaveProblemToDigiBase(ProtocolMessage json);
         int GetClassroomId(string id);
         Task<int> GetClassroomIdByName(string oldClassroomName);
+        string GetClassroomNameByAspNetId(string user);
     }
 }
