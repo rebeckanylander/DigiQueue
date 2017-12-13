@@ -10,21 +10,19 @@
 }
 
 <div class="container">
-   
-
-        <div id="createClassroomDiv" class="digidiv col-sm-4">
-            @if (Model.LoggedIn)
-            {
-                @Html.Partial("_CreateClassroom", Model.CreateClassroom)
-            }
-            else
-            {
-                @Html.Partial("_Login", Model.DigiMaster)
-            }
-        </div>
+    <div id="createClassroomDiv" class="digidiv">
+        @if (Model.LoggedIn)
+        {
+            @Html.Partial("_Register", Model.Register)
+        }
+        else
+        {
+            @Html.Partial("_Login", Model.DigiMaster)
+        }
+    </div>
 
 
-    <div id="findClassroomDiv" class="digidiv col-sm-4">
+    <div id="findClassroomDiv" class="digidiv">
         @Html.Partial("_FindClassroom", Model.DigiStudent)
     </div>
 </div>

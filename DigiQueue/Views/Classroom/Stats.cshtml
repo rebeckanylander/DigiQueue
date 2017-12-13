@@ -1,0 +1,100 @@
+﻿<button id="language">Language</button>
+<button id="time">Time</button>
+<br />
+<button id="bar">Bar</button>
+<button id="pie">Pie</button>
+<center><h6>Kicka på något</h6></center>
+<div>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+@section scriptsSection
+    {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var label = 'Amount of problems per language';
+        var type = 'pie';
+        var chartLabels = [];
+        var chartData = [];
+        var myChart = CreateChart(label, type, chartLabels, chartData);
+
+        $("#time").click(function () {
+            $.ajax({
+                url: "/Classroom/GetTime",
+                type: "GET",
+                success: function (result) {
+                    label = 'Amount of problems within time interval';
+                    chartLabels = ["< 5 min", "5 - 15 min", "15 - 30 min", "30 - 1 timme", "1 - 2 timmar", "> 2 timmar", "Ej registrerat"];
+                    chartData = JSON.parse(result);
+                    myChart.destroy();
+                    myChart = CreateChart(label, type, chartLabels, chartData);
+                }
+            });
+
+        });
+
+        $("#language").click(function () {
+            $.ajax({
+                url: "/Classroom/GetLanguage",
+                type: "GET",
+                success: function (result) {
+                    label = 'Amount of problems per language';
+                    chartLabels = ["C#", "Java", "JavaScript", "CSS", "HTML", "SQL", "Övrigt"];
+                    chartData = JSON.parse(result);
+                    myChart.destroy();
+                    myChart = CreateChart(label, type, chartLabels, chartData);
+                }
+            });
+        });
+
+        $("#pie").click(function () {
+            type = 'pie';
+            myChart.destroy();
+            myChart = CreateChart(label, type, chartLabels, chartData);
+        });
+
+        $("#bar").click(function () {
+            type = 'bar';
+            myChart.destroy();
+            myChart = CreateChart(label, type, chartLabels, chartData);
+        });
+
+        function CreateChart(label, type, etiquette, stats) {
+            return new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: etiquette,
+                    datasets: [{
+                        label: label,
+                        data: stats,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(23, 59, 9, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(23, 59, 9, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    </script>
+
+}
