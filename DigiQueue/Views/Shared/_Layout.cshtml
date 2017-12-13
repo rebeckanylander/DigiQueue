@@ -8,19 +8,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
     @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />*@
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
     <link href="/css/DigiStyleSheet.css" rel="stylesheet" />
    
 </head>
 <body>
-    <div>
-        @RenderBody()
-    </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <center>
+                    <a class="navbar-brand" href="#"><img src="~/imgs/logo academy.png" width="150px" /></a>
+                </center>
+            </div>
+        </div>
+    </nav>
+                <div>
+                    @RenderBody()
+                </div>
 
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-3.1.0.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-    @RenderSection("scriptsSection", false)
+                <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-3.1.0.js"></script>
+                <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+                <script src="http://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+                @RenderSection("scriptsSection", false)
+    <div class="footer">
+     
+    </div>
 </body>
 </html>

@@ -1,9 +1,17 @@
-﻿body{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
+﻿body {
+    font-family: 'Montserrat:50', sans-serif;
+    /*font-weight: 500;*/
+    /*families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Roboto:300,regular,500"]*/
+}
+.navbar-header {
+    
+    width: 100%;
+    background-color: white;
+    text-align: center;
 }
 
-.container {
+.container 
+    {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -26,24 +34,38 @@
 
 }
 
+#digiMasterRub, #digiStudentRub {
+    margin-bottom: 60px;
+    font-size: 60px;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-shadow: 0px 2px 16px grey;
+}
+
 #createClassroomDiv {
-    /*background-image: url('../imgs/createclassroom.jpg');*/
-    background-color: blueviolet;
+    background-image: url('../imgs/academy2.jpg');
+    background-size: auto;
     height: auto;
     width: 1000px;
-    height: 600px;
+    padding-top: 10%;
+    padding-bottom: 17%;
     text-align: center;
-    padding-top: 20%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #findClassroomDiv {
-    /*background-image: url('../imgs/createclassroom.jpg');*/
-    background-color:aqua;
+    background-image: url('../imgs/academy1.jpg');
+    background-size: auto;
     height: auto;
     width: 1000px;
-    height: 600px;
+    padding-top: 10%;
+    padding-bottom: 17%;
     text-align: center;
-    padding-top: 20%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
 }
 
 input[type=text], input[type=password], select, textarea {
@@ -70,4 +92,20 @@ input[type=submit], button {
     input[type=submit]:hover {
         background-color: #45a049;
     }
+
+.footer {
+    height:50px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #45a049;
+    color: white;
+    text-align: center;
+}
+#teacherWaitingList {
+    width: 200px;
+}
+
+
+
 
