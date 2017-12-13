@@ -28,7 +28,8 @@ namespace DigiQueue.Models.Repositories
         string GetClassroomNameByAspNetId(string user);
         Task SignOut();
         void EndProblem(string alias, string classroomId);
-        int[] GetTimeArray();
-        int[] GetLanguageArray();
+        int[] GetTimeArray(string id);
+        int[] GetLanguageArray(string id);
+        string GetClassroomById(int form);
     }
 }

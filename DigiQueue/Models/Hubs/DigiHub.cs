@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace DigiQueue.Models.Hubs
 {
@@ -12,7 +13,8 @@ namespace DigiQueue.Models.Hubs
     {
         IRepository repository;
         static List<ProblemVM> waitingList = new List<ProblemVM>();
-        static Dictionary<string, LoggedInVM> loggedInList = new Dictionary<string, LoggedInVM>();
+        public static Dictionary<string, LoggedInVM> loggedInList = new Dictionary<string, LoggedInVM>();
+        
 
         public DigiHub(IRepository repository)
         {
@@ -28,6 +30,10 @@ namespace DigiQueue.Models.Hubs
                 {
                     Groups.AddAsync(Context.ConnectionId, json.ClassroomId);
                     loggedInList.Add(Context.ConnectionId, new LoggedInVM { Alias = json.Alias, ClassroomName = json.ClassroomId});
+                }
+                else
+                {
+                    return Clients.Client(Context.ConnectionId).InvokeAsync("onDisconnect", "a");
                 }
             }
             var jsonList = JsonConvert.SerializeObject(loggedInList.Values.Where(c=> c.ClassroomName == json.ClassroomId));
@@ -46,7 +52,7 @@ namespace DigiQueue.Models.Hubs
             var json = JsonConvert.DeserializeObject<ProtocolMessage>(jsonMessage);
             if (json.Command == "Info")
             {
-                return Clients.Group(json.ClassroomId).InvokeAsync("onInfoSend", json.Description);
+                return Clients.Group(json.ClassroomId).InvokeAsync("onInfoSend", UtilClass.ParseHtml(json.Description));
             }
 
             return Task.FromResult<object>(null); //ingenting händer
@@ -78,7 +84,7 @@ namespace DigiQueue.Models.Hubs
             if (json.Command == "Message")
             {
                 repository.SaveChatToDigiBase(json);
-                string send = $"{json.Alias}: {json.Description}";
+                string send = $"{json.Alias}: {UtilClass.ParseHtml(json.Description)}";
                 return Clients.Group(json.ClassroomId).InvokeAsync("onChatSend", send);
             }
 
@@ -97,9 +103,11 @@ namespace DigiQueue.Models.Hubs
                         new ProblemVM
                         {
                             Alias = json.Alias,
-                            Description = json.Description,
-                            Location = json.Location,
-                            ClassroomName = json.ClassroomId
+                            Description = UtilClass.ParseHtml(json.Description),
+                            Location = UtilClass.ParseHtml(json.Location),
+                            ClassroomName = json.ClassroomId,
+                            Language = json.PType.ToString(),
+                            Time = DateTime.Now
                         }
                         );
 

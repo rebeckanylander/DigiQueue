@@ -69,6 +69,11 @@ namespace DigiQueue.Models.Repositories
             return await context.Classroom.ToArrayAsync();
         }
 
+        public string GetClassroomById(int form)
+        {
+            return context.Classroom.SingleOrDefault(x => x.Id == form)?.Name;
+        }
+
         public int GetClassroomId(string id)
         {
             var classroomid = context.Classroom.Single(c => c.AspUserId == id).Id;
@@ -87,10 +92,11 @@ namespace DigiQueue.Models.Repositories
             return classroomName;
         }
 
-        public int[] GetLanguageArray()
+        public int[] GetLanguageArray(string id)
         {
+            var classroomid = GetClassroomId(id);
             List<int> list = new List<int>();
-            var lister = context.Problem.Select(x => x.Type).ToList();
+            var lister = context.Problem.Where(x => x.ClassroomId == classroomid).Select(x => x.Type).ToList();
             for (int i = 0; i < 7; i++)
             {
                 list.Add(lister.Count(x => x == i));
@@ -98,9 +104,11 @@ namespace DigiQueue.Models.Repositories
             return list.ToArray();
         }
 
-        public int[] GetTimeArray()
+        public int[] GetTimeArray(string id)
         {
-            var lister = context.Problem.Where(x => x.EndDate != null).ToList();
+            var classroomid = GetClassroomId(id);
+            var listers = context.Problem.Where(x => x.ClassroomId == classroomid).ToList();
+            var lister = listers.Where(x => x.EndDate != null).ToList();
             var list = lister.Select(x => (TimeSpan)(x.EndDate - x.StartDate));
             var lis = list.Select(x => x.Minutes);
 
@@ -111,7 +119,7 @@ namespace DigiQueue.Models.Repositories
                 lis.Count(x => x >= 30 && x < 60),
                 lis.Count(x => x >= 60 && x < 120),
                 lis.Count(x => x >= 120),
-                context.Problem.Count(x => x.EndDate == null)
+                context.Problem.Where(x => x.ClassroomId == classroomid).Count(x => x.EndDate == null)
             };
         }
 

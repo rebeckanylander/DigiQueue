@@ -16,7 +16,6 @@ namespace DigiQueue.Models.Viewmodels
         [Required(ErrorMessage = "Choose a classroom")]
         public Classroom[] Classrooms { get; set; }
 
-        //public SelectList SelectList { get; set; }
-
+        public string Message { get; set; }
     }
 }

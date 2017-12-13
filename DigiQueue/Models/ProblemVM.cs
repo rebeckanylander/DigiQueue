@@ -11,5 +11,7 @@ namespace DigiQueue.Models
         public string Location { get; set; }
         public string Description { get; set; }
         public string ClassroomName { get; set; }
+        public string Language { get; set; }
+        public DateTime Time { get; set; }
     }
 }
