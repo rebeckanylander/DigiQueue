@@ -4,120 +4,126 @@
 
 @model ClassroomDigiMasterVM
 
- 
 
 <div id="wrapper">
+
     <center><div id="classroomid">@Model.Classroom.Name</div></center>
     <div class="containerClassroom">
         @Html.Partial("_TeacherWaitingList")
-        @Html.Partial("_TeacherInfoBox")
+    </div>
+    <br />
+    <div class="containerClassroom">
+
         @Html.Partial("_loggedInList")
+        @Html.Partial("_TeacherInfoBox")
         @Html.Partial("_TeacherChatBox")
     </div>
-    </div>
-
+</div>
+<div id="signOut">
     <form asp-controller="Home" asp-action="SignOut">
         <input type="submit" value="Log Out" />
-    </form>
-    @section scriptsSection
-        {
-        <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
-        <script>
-            let digiUi = {
-                sendInfoButton: $("#sendInfoButton"),
-                teacherMessageBox: $("#teacherMessageBox"),
-                infoBox: $("#infoBox"),
-                removeFromWaitingList: $("#removeFromWaitingList"),
-                teacherWaitingList: $("#teacherWaitingList"),
-                chatBox: $("#chatBox")
-            }
+</form>
+</div>
 
-            let digiFunctions = {
-                GetWaitingList: 'GetWaitingList',
-                InfoSend: 'InfoSend',
-                onInfoSend: 'onInfoSend',
-                DeleteWaitingListItem: 'DeleteWaitingListItem',
-                onDeleteWaitingListItem: 'onDeleteWaitingListItem',
-                onUpdateWaitingListItem: 'onUpdateWaitingListItem',
-                onChatSend: 'onChatSend'
-            }
+@section scriptsSection
+    {
+    <script src="~/js/signalr-client-1.0.0-alpha2-final.min.js"></script>
+    <script>
+        let digiUi = {
+            sendInfoButton: $("#sendInfoButton"),
+            teacherMessageBox: $("#teacherMessageBox"),
+            infoBox: $("#infoBox"),
+            removeFromWaitingList: $("#removeFromWaitingList"),
+            teacherWaitingList: $("#teacherWaitingList"),
+            chatBox: $("#chatBox")
+        }
 
-            $(document).ready(
-                function () {
-                    let connection = new signalR.HubConnection('/digihub');
-                    connection.start().then(function () {
-                        connection.invoke(digiFunctions.GetWaitingList, $("#classroomid").text());
-                        let message =
-                            {
-                                "alias": "Digimaster",
-                                "command": "LogIn",
-                                "classroomId": $("#classroomid").text()
-                            }
-                        connection.invoke('GetLoggedInList', JSON.stringify(message));
-                    });
+        let digiFunctions = {
+            GetWaitingList: 'GetWaitingList',
+            InfoSend: 'InfoSend',
+            onInfoSend: 'onInfoSend',
+            DeleteWaitingListItem: 'DeleteWaitingListItem',
+            onDeleteWaitingListItem: 'onDeleteWaitingListItem',
+            onUpdateWaitingListItem: 'onUpdateWaitingListItem',
+            onChatSend: 'onChatSend'
+        }
 
-                    digiUi.sendInfoButton.click(
-                        function () {
-                            let message = {
-                                "description": digiUi.teacherMessageBox.val(),
-                                "command": "Info",
-                                "classroomId": $("#classroomid").text()
-                            }
-                            connection.invoke(digiFunctions.InfoSend, JSON.stringify(message));
-                        });
-
-                    connection.on(digiFunctions.onInfoSend, data => {
-                        digiUi.infoBox.append(data + "\n");
-                        digiUi.teacherMessageBox.val("");
-                        digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
-                    });
-
-                    digiUi.removeFromWaitingList.click(() => {
-                        let aliasToRemove = digiUi.teacherWaitingList.val(); //selecteditem;
-                        let message = {
-                            "alias": aliasToRemove,
-                            "command": "Delete",
+        $(document).ready(
+            function () {
+                let connection = new signalR.HubConnection('/digihub');
+                connection.start().then(function () {
+                    connection.invoke(digiFunctions.GetWaitingList, $("#classroomid").text());
+                    let message =
+                        {
+                            "alias": "Digimaster",
+                            "command": "LogIn",
                             "classroomId": $("#classroomid").text()
                         }
-                        if (aliasToRemove != null) {
-                            connection.invoke(digiFunctions.DeleteWaitingListItem, JSON.stringify(message));
+                    connection.invoke('GetLoggedInList', JSON.stringify(message));
+                });
+
+                digiUi.sendInfoButton.click(
+                    function () {
+                        let message = {
+                            "description": digiUi.teacherMessageBox.val(),
+                            "command": "Info",
+                            "classroomId": $("#classroomid").text()
                         }
+                        connection.invoke(digiFunctions.InfoSend, JSON.stringify(message));
                     });
 
-                    connection.on(digiFunctions.onDeleteWaitingListItem, data => {
-                        let json = json.parse(data);
-                        for (var i = 0; i < json.length; i++) {
-                            digiUi.teacherWaitingList.append('<option value="' + json[i] + '">' + 'test' + json[i] + '</option>');
-                        }
-                    })
+                connection.on(digiFunctions.onInfoSend, data => {
+                    digiUi.infoBox.append(data + "\n");
+                    digiUi.teacherMessageBox.val("");
+                    digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
+                });
 
-                    connection.on(digiFunctions.onUpdateWaitingListItem, data => {
-                        var prevProblems = $('#teacherWaitingList option').length;
-                        digiUi.teacherWaitingList.html("");
-                        var jsonObj = JSON.parse(data);
-                        for (var i = 0; i < jsonObj.length; i++) {
-                            digiUi.teacherWaitingList.append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
-                        }
-                        var problems = $('#teacherWaitingList option').length;
-                        if (problems == 1 && prevProblems == 0) {
-                            alert('En elev behöver hjälp!');
-                        }
-                    });
+                digiUi.removeFromWaitingList.click(() => {
+                    let aliasToRemove = digiUi.teacherWaitingList.val(); //selecteditem;
+                    let message = {
+                        "alias": aliasToRemove,
+                        "command": "Delete",
+                        "classroomId": $("#classroomid").text()
+                    }
+                    if (aliasToRemove != null) {
+                        connection.invoke(digiFunctions.DeleteWaitingListItem, JSON.stringify(message));
+                    }
+                });
 
-                    connection.on(digiFunctions.onChatSend, data => {
-                        digiUi.chatBox.append(data + "\n");
-                        digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
-                    });
+                connection.on(digiFunctions.onDeleteWaitingListItem, data => {
+                    let json = json.parse(data);
+                    for (var i = 0; i < json.length; i++) {
+                        digiUi.teacherWaitingList.append('<option value="' + json[i] + '">' + 'test' + json[i] + '</option>');
+                    }
+                })
 
-                    connection.on('onLogIn', data => {
-                        $("#loggedInList").text("");
-                        var jsonObj = JSON.parse(data);
-                        for (var i = 0; i < jsonObj.length; i++) {
-                            $("#loggedInList").append(jsonObj[i].Alias + "\n");
-                        }
-                        $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
-                    });
-                }
-            );
-        </script>
-    }
+                connection.on(digiFunctions.onUpdateWaitingListItem, data => {
+                    var prevProblems = $('#teacherWaitingList option').length;
+                    digiUi.teacherWaitingList.html("");
+                    var jsonObj = JSON.parse(data);
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        digiUi.teacherWaitingList.append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
+                    }
+                    var problems = $('#teacherWaitingList option').length;
+                    if (problems == 1 && prevProblems == 0) {
+                        alert('En elev behöver hjälp!');
+                    }
+                });
+
+                connection.on(digiFunctions.onChatSend, data => {
+                    digiUi.chatBox.append(data + "\n");
+                    digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
+                });
+
+                connection.on('onLogIn', data => {
+                    $("#loggedInList").text("");
+                    var jsonObj = JSON.parse(data);
+                    for (var i = 0; i < jsonObj.length; i++) {
+                        $("#loggedInList").append(jsonObj[i].Alias + "\n");
+                    }
+                    $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
+                });
+            }
+        );
+    </script>
+}
