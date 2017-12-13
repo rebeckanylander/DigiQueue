@@ -3,6 +3,7 @@
 @{ViewBag.Title = "Register";}
 
 <div id="digiMasterRub" style="font-size:42px;">Regga ny lärare</div>
+<div>@Model.Message</div>
 <form asp-controller="Home" asp-action="Register">
     <input asp-for="@Model.OldClassroomName" type="hidden"/>
     <br />
