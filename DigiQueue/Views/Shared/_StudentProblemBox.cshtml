@@ -1,19 +1,25 @@
 ﻿<div>
-    <h4> Vad har du för problem?</h4>
-<textarea id="descriptionText" rows="10" cols="40"></textarea>
-    <br />
-    <input id="locationText" type="text" name="Location" placeholder="Var befinner du dig?">
-    <br />
-    <select id="PType" name="PType">
-        <option value="0">C#</option>
-        <option value="1">Java</option>
-        <option value="2">JavaScript</option>
-        <option value="3">CSS</option>
-        <option value="4">Html</option>
-        <option value="5">SQL</option>
-        <option value="6">Övrigt</option>
-    </select>
-    <br />
+    <h4> Beskriv ditt problem</h4>
+    <div class="container">
+        <div>
+            <textarea id="descriptionText" rows="10" cols="20"></textarea>
+        </div >
 
-    <button id="problemButton">Add</button>
+        <div class="containerContent">
+            
+        <input id="locationText" type="text" name="Location" placeholder="Var befinner du dig?">
+        <br />
+        <select id="PType" name="PType">
+            <option value="0">C#</option>
+            <option value="1">Java</option>
+            <option value="2">JavaScript</option>
+            <option value="3">CSS</option>
+            <option value="4">Html</option>
+            <option value="5">SQL</option>
+            <option value="6">Övrigt</option>
+        </select>
+        <br />
+        <button id="problemButton">Add</button>
+            </div>
+    </div>
 </div>

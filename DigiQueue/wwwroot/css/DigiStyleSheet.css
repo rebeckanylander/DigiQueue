@@ -9,39 +9,58 @@
     background-color: white;
     text-align: center;
 }
-
-.container 
-    {
+.containerIndex {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /*margin-top: 10%;
-    margin-bottom: 10%;*/
+ 
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-right: 10%;
+    padding-left: 10%;
 }
 
+.containerContent {
+    padding: 20px;
+    padding: 20px;
+    margin-right: 80px;
+   
+}
+.containerContentRow2 {
+    padding-right: 110px;
+    padding-left: 110px;
+}
 .digidiv {
     display: flex;
     flex-direction: column;
     /*margin-left: 10%;
     margin-right: 10%;*/
 }
-
+#wrapper {
+    height: 700px;
+    background-color: #fafafa;
+}
 .containerClassroom {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
 
-
+#classroomid {
+    font-size: 36px;
 }
 
 #digiMasterRub, #digiStudentRub {
-    margin-bottom: 60px;
-    font-size: 60px;
-    color: white;
-    font-weight: 500;
-    text-transform: uppercase;
-    text-shadow: 0px 2px 16px grey;
-}
+        margin-bottom: 60px;
+        font-size: 60px;
+        color: white;
+        font-weight: 500;
+        text-transform: uppercase;
+        text-shadow: 0px 2px 16px grey;
+    }
 
 #createClassroomDiv {
     background-image: url('../imgs/academy2.jpg');

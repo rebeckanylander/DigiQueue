@@ -4,12 +4,12 @@
 
 @model HomeIndexVM
 
-@if (Model.LoggedIn)
+@*@if (Model.LoggedIn)
 {
     <h1>Hej @Model.DigiMaster.Username</h1>
-}
+}*@
 
-<div class="container">
+<div class="containerIndex">
     <div id="createClassroomDiv" class="digidiv">
         @if (Model.LoggedIn)
         {

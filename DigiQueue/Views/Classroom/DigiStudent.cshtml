@@ -3,19 +3,28 @@
 }
 
 @model ClassroomDigiStudentVM
-@* Ljud för notification *@
 
-<center><div id="classroomid">@Model.Classroom.Name</div> </center>
-<div id="alias" hidden>@Model.Alias</div>
-<audio id="notification" src="~/audio/capisci.mp3"></audio>
-<div class="containerClassroom">
 
-    @Html.Partial("_loggedInList")
-    @Html.Partial("_StudentProblemBox")
-    @Html.Partial("_StudentWaitingList")
-    @Html.Partial("_StudentChatbox")
-    @Html.Partial("_StudentInfoboxFromTeacher")
+<div id="wrapper">
+    <br />
+    <center><div id="classroomid">@Model.Classroom.Name</div> </center>
+    <div id="alias" hidden>@Model.Alias</div>
+    <audio id="notification" src="~/audio/capisci.mp3"></audio>
+    <br />
+    <div class="containerClassroom">
 
+        @Html.Partial("_StudentProblemBox")
+        @Html.Partial("_StudentChatbox")
+       
+    </div>
+    <br />
+    <div class="containerClassroom">
+        @Html.Partial("_loggedInList")
+        
+        @Html.Partial("_StudentWaitingList")
+        @Html.Partial("_StudentInfoboxFromTeacher")
+
+    </div>
 </div>
 @section scriptsSection
     {
@@ -76,7 +85,7 @@
                 digiUi.chatBox.append(data + "\n");
                 digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
             });
-            
+
 
             digiUi.problemButton.click(() => {
                 if (digiUi.problemButton.text() == "Add") { //Add
