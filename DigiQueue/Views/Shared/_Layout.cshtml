@@ -4,9 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @*<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+@*    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
     @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />*@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
     <link href="/css/DigiStyleSheet.css" rel="stylesheet" />
@@ -14,13 +12,13 @@
 </head>
 <body>
     <nav class="navbar navbar-default">
-        <div class="container-fluid">
+        @*<div class="container-fluid">*@
             <div class="navbar-header">
-                <center>
+               
                     <a class="navbar-brand" href="#"><img src="~/imgs/logo academy.png" width="150px" /></a>
-                </center>
+            
             </div>
-        </div>
+        @*</div>*@
     </nav>
                 <div>
                     @RenderBody()
@@ -33,7 +31,7 @@
 
                 @RenderSection("scriptsSection", false)
     <div class="footer">
-     
+     <p style="padding-right: 50px;">C# HT 2017 Academy - Tan, Rebecka, Mai</p>
     </div>
 </body>
 </html>

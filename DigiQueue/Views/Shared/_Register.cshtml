@@ -2,8 +2,7 @@
 
 @{ViewBag.Title = "Register";}
 
-<div id="digiMasterRub" style="font-size:42px;">Registrera ny lärare</div>
-    <div>@Model.Message</div>
+<div id="digiMasterRub" style="font-size:42px;">Regga ny lärare</div>
 <form asp-controller="Home" asp-action="Register">
     <input asp-for="@Model.OldClassroomName" type="hidden"/>
     <br />
@@ -21,8 +20,8 @@
     <br />
 
     <input type="submit" value="Register" />
-    <p>eller</p>
-    <button>Gå till ditt klassrum</button>
+    <p style="color:white;">eller</p>
+    <button style="width:180px;">Gå till ditt klassrum</button>
 </form>
 
 @section scriptsSection {

@@ -1,52 +1,100 @@
 ﻿body {
+    background-image: url('../imgs/academy1.jpg');
+    margin: 0px;
     font-family: 'Montserrat:50', sans-serif;
+    color: #3f3f3f;
     /*font-weight: 500;*/
     /*families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Roboto:300,regular,500"]*/
 }
+
+textarea {
+    resize: none;
+    font-family: 'Montserrat:50', sans-serif;
+    background: white;
+}
+
+input[type=text], input[type=password], select, textarea {
+    /*width: 250px;*/
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Montserrat:50', sans-serif;
+    background-color: white;
+}
+
+input[type=submit], button {
+    width: 150px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+#wrapper {
+    height: 700px;
+    background-color: #fafafa;
+    padding-top: 50px;
+    margin: 8%;
+    opacity: 0.9;
+    background: #fafafa; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #fafafa, #f1f1f1); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #fafafa, #f1f1f1); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #fafafa, #f1f1f1); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #fafafa, #f1f1f1); /* Standard syntax (must be last) */
+}
+
 .navbar-header {
-    
     width: 100%;
     background-color: white;
     text-align: center;
+    border: 0px;
 }
+
 .containerIndex {
     display: flex;
     flex-direction: row;
     justify-content: center;
- 
 }
+
 .container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding-right: 10%;
-    padding-left: 10%;
+    padding-right: 5%;
+    padding-left: 5%;
 }
 
 .containerContent {
     padding: 20px;
     padding: 20px;
-    margin-right: 80px;
-   
 }
+
 .containerContentRow2 {
-    padding-right: 110px;
-    padding-left: 110px;
+    padding-right: 65px;
+    padding-left: 65px;
 }
+
 .digidiv {
     display: flex;
     flex-direction: column;
     /*margin-left: 10%;
     margin-right: 10%;*/
 }
-#wrapper {
-    height: 700px;
-    background-color: #fafafa;
-}
+
 .containerClassroom {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
 }
 
 #classroomid {
@@ -54,13 +102,13 @@
 }
 
 #digiMasterRub, #digiStudentRub {
-        margin-bottom: 60px;
-        font-size: 60px;
-        color: white;
-        font-weight: 500;
-        text-transform: uppercase;
-        text-shadow: 0px 2px 16px grey;
-    }
+    margin-bottom: 60px;
+    font-size: 60px;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-shadow: 0px 2px 16px grey;
+}
 
 #createClassroomDiv {
     background-image: url('../imgs/academy2.jpg');
@@ -87,44 +135,20 @@
     background-position-x: center;
 }
 
-input[type=text], input[type=password], select, textarea {
-    /*width: 250px;*/
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type=submit], button {
-    width: 150px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-    input[type=submit]:hover {
-        background-color: #45a049;
-    }
 
 .footer {
-    height:50px;
+    height: 60px;
     left: 0;
     bottom: 0;
     width: 100%;
     background-color: #45a049;
     color: white;
-    text-align: center;
+    text-align: right;
+    padding-top: 20px;
+    font-size: 12px;
 }
+
 #teacherWaitingList {
     width: 200px;
 }
-
-
-
 
