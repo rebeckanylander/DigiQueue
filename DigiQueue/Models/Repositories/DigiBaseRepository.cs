@@ -36,10 +36,10 @@ namespace DigiQueue.Models.Repositories
 
         public async Task<ClassroomDigiMasterVM> CreateClassroom(string name, string id)
         {
-            await context.Classroom.AddAsync(new Classroom { Name = name, AspUserId = id });
+            await context.UserExtension.AddAsync(new UserExtension { Name = name, AspUserId = id });
             await context.SaveChangesAsync();
 
-            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.Name == name && c.AspUserId == id) };
+            return new ClassroomDigiMasterVM { Classroom = await context.UserExtension.SingleOrDefaultAsync(c => c.Name == name && c.AspUserId == id) };
         }
 
         public async Task<IdentityResult> CreateUser(string username, string password)
@@ -49,52 +49,52 @@ namespace DigiQueue.Models.Repositories
 
         public void EndProblem(string alias, string classroomId)
         {
-            var problem = context.Problem.Last(p => p.Alias == alias && p.ClassroomId == context.Classroom.Single(c => c.Name == classroomId).Id);
+            var problem = context.Problem.Last(p => p.Alias == alias && p.ClassroomId == context.UserExtension.Single(c => c.Name == classroomId).Id);
             problem.EndDate = DateTime.Now;
             context.SaveChanges();
         }
 
-        public async Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom)
+        public async Task<ClassroomDigiMasterVM> FindClassroom(string alias, UserExtension classroom)
         {
-            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c == classroom) };
+            return new ClassroomDigiMasterVM { Classroom = await context.UserExtension.SingleOrDefaultAsync(c => c == classroom) };
         }
 
         public async Task<ClassroomDigiMasterVM> FindClassroom(int id)
         {
-            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.Id == id) };
+            return new ClassroomDigiMasterVM { Classroom = await context.UserExtension.SingleOrDefaultAsync(c => c.Id == id) };
         }
 
         public async Task<ClassroomDigiMasterVM> FindClassroom(ClaimsPrincipal user)
         {
             var use = userManager.GetUserId(user);
-            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.AspUserId == use) };
+            return new ClassroomDigiMasterVM { Classroom = await context.UserExtension.SingleOrDefaultAsync(c => c.AspUserId == use) };
         }
 
-        public async Task<Classroom[]> GetAllClassrooms()
+        public async Task<UserExtension[]> GetAllClassrooms()
         {
-            return await context.Classroom.ToArrayAsync();
+            return await context.UserExtension.ToArrayAsync();
         }
 
         public string GetClassroomById(int form)
         {
-            return context.Classroom.SingleOrDefault(x => x.Id == form)?.Name;
+            return context.UserExtension.SingleOrDefault(x => x.Id == form)?.Name;
         }
 
         public int GetClassroomId(string id)
         {
-            var classroomid = context.Classroom.Single(c => c.AspUserId == id).Id;
+            var classroomid = context.UserExtension.Single(c => c.AspUserId == id).Id;
             return classroomid;
         }
 
         public async Task<int> GetClassroomIdByName(string oldClassroomName)
         {
-            var classroom = await context.Classroom.SingleAsync(c => c.Name == oldClassroomName);
+            var classroom = await context.UserExtension.SingleAsync(c => c.Name == oldClassroomName);
             return classroom.Id;
         }
 
         public string GetClassroomNameByAspNetId(string user)
         {
-            var classroomName = context.Classroom.Single(c => c.AspUserId == user).Name;
+            var classroomName = context.UserExtension.Single(c => c.AspUserId == user).Name;
             return classroomName;
         }
 
@@ -147,7 +147,7 @@ namespace DigiQueue.Models.Repositories
 
         public async Task<bool> IsClassroomNameAvailable(string name)
         {
-            Classroom classroom = await context.Classroom.FirstOrDefaultAsync(c => c.Name == name);
+            UserExtension classroom = await context.UserExtension.FirstOrDefaultAsync(c => c.Name == name);
             return classroom == null;
         }
 
@@ -156,7 +156,7 @@ namespace DigiQueue.Models.Repositories
             Message message = new Message
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
+                ClassroomId = context.UserExtension.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
                 Date = DateTime.Now,
                 Content = json.Description
             };
@@ -169,7 +169,7 @@ namespace DigiQueue.Models.Repositories
             Problem problem = new Problem
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
+                ClassroomId = context.UserExtension.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
                 StartDate = DateTime.Now,
                 Description = json.Description,
                 Type = (int)json.PType

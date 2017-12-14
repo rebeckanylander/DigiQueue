@@ -10,6 +10,6 @@ namespace DigiQueue.Models.Viewmodels
     public class ClassroomDigiStudentVM
     {
         public string Alias { get; set; }
-        public Classroom Classroom { get; set; }
+        public UserExtension Classroom { get; set; }
     }
 }

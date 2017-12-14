@@ -13,8 +13,9 @@ namespace DigiQueue.Models.Hubs
     {
         IRepository repository;
         static List<ProblemVM> waitingList = new List<ProblemVM>();
-        public static Dictionary<string, LoggedInVM> loggedInList = new Dictionary<string, LoggedInVM>();
-        
+        //public static Dictionary<string, LoggedInVM> loggedInList = new Dictionary<string, LoggedInVM>();
+        public static Dictionary<string, LoggedInVM> loggedInList { get; private set; } = new Dictionary<string, LoggedInVM>();
+
 
         public DigiHub(IRepository repository)
         {

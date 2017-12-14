@@ -14,7 +14,7 @@ namespace DigiQueue.Models.Viewmodels
         public string Alias { get; set; }
 
         [Required(ErrorMessage = "Choose a classroom")]
-        public Classroom[] Classrooms { get; set; }
+        public UserExtension[] Classrooms { get; set; }
 
         public string Message { get; set; }
     }
