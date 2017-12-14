@@ -4,6 +4,7 @@
 
 <div id="viewHeader"><img src="~/imgs/avatar.png" /><br />
     Skapa ny lärare</div>
+<div>@Model.Message</div>
     
 <form asp-controller="Home" asp-action="Register">
     <input asp-for="@Model.OldClassroomName" type="hidden"/>

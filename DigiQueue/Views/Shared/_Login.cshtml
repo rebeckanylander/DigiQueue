@@ -2,7 +2,7 @@
 
     <div id="viewHeader"><img src="~/imgs/avatar.png"  /><br />
     Lärare</div>
-<form asp-controller="Home" asp-action="Login">
+<form asp-controller="Home" asp-action="Index">
     <input asp-for="Username" placeholder="Username" />
     <br />
     <span asp-validation-for="Username"></span>
@@ -10,7 +10,7 @@
     <input asp-for="Password" placeholder="Password" />
     <br />
     <span asp-validation-for="Password"></span>
-    
+
     <input type="submit" value="Logga in" />
 </form>
 
