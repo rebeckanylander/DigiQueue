@@ -9,7 +9,8 @@
 
     <div id="alias" hidden>@Model.Alias</div>
     <center><div id="classroomName">@Model.Classroom.Name</div></center>
-    <audio id="notification" src="~/audio/capisci.mp3"></audio>
+    <audio id="notification" src="~/audio/icq.mp3">
+    </audio>
     <br />
     <div class="containerClassroom">
 
@@ -136,10 +137,10 @@
             });
 
             connection.on(digiFunctions.onInfoSend, data => {
-                digiUi.infoBox.append(data + "\n");
-                digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);
                 digiUi.notification.play();
-                alert('Ny info!!!!\n' + data);
+                digiUi.infoBox.append(data + "\n");
+                digiUi.infoBox.scrollTop(digiUi.infoBox[0].scrollHeight);     
+                alert('Ny info från läraren:\n' + data);
             });
 
             connection.on('onLogIn', data => {
