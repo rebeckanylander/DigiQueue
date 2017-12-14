@@ -22,6 +22,7 @@ namespace DigiQueue.Models.Viewmodels
         public string ClassroomName { get; set; }
 
         public string OldClassroomName { get; set; }
+        public int OldClassroomId { get; set; }
         public string Message { get; set; }
     }
 }

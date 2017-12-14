@@ -7,7 +7,7 @@
 
 <div id="wrapper">
 
-    <center><div id="classroomid">@Model.Classroom.Name</div></center>
+    <center><div id="classroomName">@Model.Classroom.Name</div></center>
     <div class="containerClassroom">
         @Html.Partial("_TeacherWaitingList")
     </div>
@@ -22,6 +22,9 @@
 <div id="signOut">
     <form asp-controller="Home" asp-action="SignOut">
         <input type="submit" value="Log Out" />
+    </form>
+    <form asp-controller="Classroom" asp-action="Stats">
+        <input type="submit" value="Stats" />
     </form>
 </div>
 
@@ -52,12 +55,12 @@
             function () {
                 let connection = new signalR.HubConnection('/digihub');
                 connection.start().then(function () {
-                    connection.invoke(digiFunctions.GetWaitingList, $("#classroomid").text());
+                    connection.invoke(digiFunctions.GetWaitingList, $("#classroomName").text());
                     let message =
                         {
                             "alias": "Digimaster",
                             "command": "LogIn",
-                            "classroomId": $("#classroomid").text()
+                            "classroomName": $("#classroomName").text()
                         }
                     connection.invoke('GetLoggedInList', JSON.stringify(message));
                 });
@@ -67,7 +70,7 @@
                         let message = {
                             "description": digiUi.teacherMessageBox.val(),
                             "command": "Info",
-                            "classroomId": $("#classroomid").text()
+                            "classroomName": $("#classroomName").text()
                         }
                         connection.invoke(digiFunctions.InfoSend, JSON.stringify(message));
                     });
@@ -83,7 +86,7 @@
                     let message = {
                         "alias": aliasToRemove,
                         "command": "Delete",
-                        "classroomId": $("#classroomid").text()
+                        "classroomName": $("#classroomName").text()
                     }
                     if (aliasToRemove != null) {
                         connection.invoke(digiFunctions.DeleteWaitingListItem, JSON.stringify(message));

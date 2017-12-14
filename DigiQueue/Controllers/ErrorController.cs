@@ -19,5 +19,10 @@ namespace DigiQueue.Controllers
         {
             return View();
         }
+
+        public IActionResult InputError()
+        {
+            return View();
+        }
     }
 }

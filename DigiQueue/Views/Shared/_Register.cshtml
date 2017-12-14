@@ -5,14 +5,14 @@
 <div id="digiMasterRub" style="font-size:42px;">Regga ny lärare</div>
 <div>@Model.Message</div>
 <form asp-controller="Home" asp-action="Register">
-    <input asp-for="@Model.OldClassroomName" type="hidden"/>
+    <input asp-for="@Model.OldClassroomName" type="hidden" />
     <br />
     @*<label asp-for="@Model.RegUsername"></label>*@
     <input asp-for="@Model.RegUsername" placeholder="Användarnamn" />
     <span asp-validation-for="@Model.RegUsername"></span>
     <br />
     @*<label asp-for="@Model.RegPassword"></label>*@
-    <input asp-for="@Model.RegPassword" placeholder="Lösenord"/>
+    <input asp-for="@Model.RegPassword" placeholder="Lösenord" />
     <span asp-validation-for="@Model.RegPassword"></span>
     <br />
     @*<label asp-for="@Model.ClassroomName"></label>*@
@@ -22,9 +22,13 @@
 
     <input type="submit" value="Register" />
     <p style="color:white;">eller</p>
-    <button style="width:180px;">Gå till ditt klassrum</button>
 </form>
-
-@section scriptsSection {
-    @Html.Partial("ValidationScript")
-}
+<form asp-controller="Classroom" asp-action="DigiMaster">
+    <input type="submit" value="Gå till ditt klassrum" />
+</form>
+<form asp-controller="Classroom" asp-action="Stats">
+    <input type="submit" value="Statistik" />
+</form>
+<form asp-controller="Home" asp-action="SignOut">
+    <input type="submit" value="Logga Ut" />
+</form>

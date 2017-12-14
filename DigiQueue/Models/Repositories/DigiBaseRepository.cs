@@ -64,6 +64,12 @@ namespace DigiQueue.Models.Repositories
             return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.Id == id) };
         }
 
+        public async Task<ClassroomDigiMasterVM> FindClassroom(ClaimsPrincipal user)
+        {
+            var use = userManager.GetUserId(user);
+            return new ClassroomDigiMasterVM { Classroom = await context.Classroom.SingleOrDefaultAsync(c => c.AspUserId == use) };
+        }
+
         public async Task<Classroom[]> GetAllClassrooms()
         {
             return await context.Classroom.ToArrayAsync();
@@ -110,15 +116,15 @@ namespace DigiQueue.Models.Repositories
             var listers = context.Problem.Where(x => x.ClassroomId == classroomid).ToList();
             var lister = listers.Where(x => x.EndDate != null).ToList();
             var list = lister.Select(x => (TimeSpan)(x.EndDate - x.StartDate));
-            var lis = list.Select(x => x.Minutes);
+            var lis = list.Select(x => new {Hours = x.Hours, Minutes = x.Minutes } );
 
             return new int[] {
-                lis.Count(x => x < 5),
-                lis.Count(x => x >= 5 && x < 15),
-                lis.Count(x => x >= 15 && x < 30),
-                lis.Count(x => x >= 30 && x < 60),
-                lis.Count(x => x >= 60 && x < 120),
-                lis.Count(x => x >= 120),
+                lis.Count(x => x.Minutes < 5),
+                lis.Count(x => x.Minutes >= 5 && x.Minutes < 15),
+                lis.Count(x => x.Minutes >= 15 && x.Minutes < 30),
+                lis.Count(x => x.Minutes >= 30 && x.Minutes < 60),
+                lis.Count(x => x.Hours == 1),
+                lis.Count(x => x.Hours > 1),
                 context.Problem.Where(x => x.ClassroomId == classroomid).Count(x => x.EndDate == null)
             };
         }
@@ -150,7 +156,7 @@ namespace DigiQueue.Models.Repositories
             Message message = new Message
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomId).Id,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
                 Date = DateTime.Now,
                 Content = json.Description
             };
@@ -163,7 +169,7 @@ namespace DigiQueue.Models.Repositories
             Problem problem = new Problem
             {
                 Alias = json.Alias,
-                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomId).Id,
+                ClassroomId = context.Classroom.SingleOrDefault(c => c.Name == json.ClassroomName).Id,
                 StartDate = DateTime.Now,
                 Description = json.Description,
                 Type = (int)json.PType

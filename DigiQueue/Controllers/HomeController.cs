@@ -42,7 +42,7 @@ namespace DigiQueue.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 id = repository.GetUserId(HttpContext.User);
-                model.Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id), Message = TempData["message"]?.ToString(), RegPassword = TempData["password"]?.ToString(), ClassroomName = TempData["classroomname"]?.ToString(), RegUsername = TempData["username"]?.ToString() };
+                model.Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id), OldClassroomId = repository.GetClassroomId(id), Message = TempData["message"]?.ToString(), RegPassword = TempData["password"]?.ToString(), ClassroomName = TempData["classroomname"]?.ToString(), RegUsername = TempData["username"]?.ToString() };
             }
 
             return View(model);
@@ -86,7 +86,7 @@ namespace DigiQueue.Controllers
             }
 
             var id = await repository.GetUserAsync(viewModel.Username);
-            return RedirectToAction("DigiMaster", "Classroom", new { id = repository.GetClassroomId(id) });
+            return RedirectToAction("DigiMaster", "Classroom"/*, new { id = repository.GetClassroomId(id) }*/);
         }
 
         //[Authorize]
@@ -156,6 +156,21 @@ namespace DigiQueue.Controllers
                 return RedirectToAction(nameof(Index), model);
             }
 
+            if (viewModel.Alias.Length > 32)
+            {
+                var model = new HomeIndexVM
+                {
+                    LoggedIn = User.Identity.IsAuthenticated,
+                    DigiStudent = new HomeIndexFindClassroomVM { Alias = viewModel.Alias },
+                    CreateClassroom = new HomeIndexCreateClassroomVM(),
+                    DigiMaster = new HomeIndexLoginVM(),
+                    Register = new AccountRegisterVM()
+                };
+                TempData["alias"] = viewModel.Alias;
+                TempData["findMessage"] = "Ditt alias är för långt, vänligen ange ett kortare alias";
+                return RedirectToAction(nameof(Index), model);
+            }
+
             var form = int.Parse(Request.Form["DropDownListKlasser"]);
             if ((DigiHub.loggedInList.Values.SingleOrDefault(p => p.Alias == viewModel.Alias && p.ClassroomName == repository.GetClassroomById(form))) != null)
             {
@@ -190,7 +205,7 @@ namespace DigiQueue.Controllers
                     DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
                     CreateClassroom = new HomeIndexCreateClassroomVM(),
                     DigiMaster = new HomeIndexLoginVM { Username = user },
-                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id) }
+                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id), OldClassroomId = repository.GetClassroomId(id) }
                 };
                 TempData["username"] = viewModel.RegUsername;
                 TempData["password"] = viewModel.RegPassword;
@@ -210,7 +225,7 @@ namespace DigiQueue.Controllers
                     DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
                     CreateClassroom = new HomeIndexCreateClassroomVM(),
                     DigiMaster = new HomeIndexLoginVM { Username = user },
-                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id) }
+                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id), OldClassroomId = repository.GetClassroomId(id) }
                 };
                 TempData["username"] = viewModel.RegUsername;
                 TempData["password"] = viewModel.RegPassword;
@@ -243,7 +258,7 @@ namespace DigiQueue.Controllers
                     DigiStudent = new HomeIndexFindClassroomVM { Classrooms = await repository.GetAllClassrooms() }, //classrooms = repository.FindAllClassrooms();
                     CreateClassroom = new HomeIndexCreateClassroomVM(),
                     DigiMaster = new HomeIndexLoginVM { Username = user },
-                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id) }
+                    Register = new AccountRegisterVM { OldClassroomName = repository.GetClassroomNameByAspNetId(id), OldClassroomId = repository.GetClassroomId(id) }
                 };
                 TempData["username"] = viewModel.RegUsername;
                 TempData["password"] = viewModel.RegPassword;
