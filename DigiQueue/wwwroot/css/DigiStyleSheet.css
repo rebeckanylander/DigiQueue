@@ -60,7 +60,10 @@ input[type=submit], button {
     padding-left:130px;
     border: 0px;
 }
+#classroomName {
+    font-size: 32px;
 
+}
 .containerIndex {
     display: flex;
     flex-direction: row;
@@ -169,3 +172,13 @@ input[type=submit], button {
     margin-top: 50px;
 
 }
+
+#statsDesign {
+    margin-left: 100px;
+    margin-right: 100px;
+    /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);*/
+   
+ 
+/*}
+#myChart {
+}*/

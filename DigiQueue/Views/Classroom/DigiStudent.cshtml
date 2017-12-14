@@ -70,7 +70,7 @@
 
             digiUi.chatBoxButton.click(() => {
                 if (digiUi.messageBox.val().length > 100) {
-                    alert("Ditt meddelande är för lång, var vänlig korta ner ditt meddelande.");
+                    alert("Ditt meddelande är för långt, var vänlig korta ner ditt meddelande.");
                 } else {
 
                     let message = {
@@ -88,7 +88,10 @@
                 digiUi.chatBox.append(data + "\n");
                 digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
             });
-
+            connection.on('onRemoveItem', data => {
+                digiUi.problemButton.text("Add");
+                alert("Läraren har tagit bort dig från listan");
+            }); 
 
             digiUi.problemButton.click(() => {
                 if (digiUi.problemButton.text() == "Add") {

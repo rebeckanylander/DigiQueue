@@ -68,6 +68,9 @@ namespace DigiQueue.Models.Hubs
                 ProblemVM problem = waitingList.SingleOrDefault(p => p.Alias == json.Alias);
                 if (problem != null)
                 {
+                    var id = loggedInList.SingleOrDefault(x => x.Value.Alias == json.Alias);
+                    Clients.Client(id.Key).InvokeAsync("onRemoveItem", "delete");
+
                     repository.EndProblem(json.Alias, json.ClassroomName);
                     waitingList.Remove(problem);
                 }

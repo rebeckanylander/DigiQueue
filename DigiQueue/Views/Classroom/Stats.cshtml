@@ -1,19 +1,19 @@
 ﻿<div id="wrapper">
     <div class="container">
         <div id="sortButtonsDiv">
-            <h4>Sortera efter:</h4>
+            <h4>1. Sortera efter:</h4>
             <button id="language">Language</button>
             <button id="time">Time</button>
         </div>
         <div id="typeButtonsDiv">
-            <h4>Typ av diagram:</h4>
+            <h4>2. Typ av diagram:</h4>
             <button id="bar">Bar</button>
             <button id="pie">Pie</button>
         </div>
     </div>
     <center><h3 id="statsRub"></h3></center>
-    <div>
-        <canvas id="myChart" width="400" height="400"></canvas>
+    <div id="statsDesign">
+        <canvas id="myChart" height="400px"></canvas>
     </div>
 </div>
 <form asp-controller="Classroom" asp-action="DigiMaster">
