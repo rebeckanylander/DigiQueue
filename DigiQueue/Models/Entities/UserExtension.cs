@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DigiQueue.Models.Entities
 {
-    public partial class Classroom
+    public partial class UserExtension
     {
-        public Classroom()
+        public UserExtension()
         {
             Message = new HashSet<Message>();
             Problem = new HashSet<Problem>();

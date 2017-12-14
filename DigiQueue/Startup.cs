@@ -30,10 +30,10 @@ namespace DigiQueue
         {
 
             string connString = conf.GetConnectionString("connString");
-            
+
             // Scaffold-DbContext "put connstring" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Models/Entities" -Context "DigibaseContext" -Schema "DigiSchema" -Force
 
-
+            
             services.AddDbContext<DigibaseContext>(o => o.UseSqlServer(connString));
             services.AddDbContext<IdentityDbContext>(o => o.UseSqlServer(connString));
 

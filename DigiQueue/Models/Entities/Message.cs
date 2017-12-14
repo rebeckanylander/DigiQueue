@@ -11,6 +11,6 @@ namespace DigiQueue.Models.Entities
         public string Content { get; set; }
         public DateTime Date { get; set; }
 
-        public Classroom Classroom { get; set; }
+        public UserExtension Classroom { get; set; }
     }
 }
