@@ -4,6 +4,15 @@
 
 @model ClassroomDigiMasterVM
 
+<div id="signOut">
+    <form asp-controller="Home" asp-action="SignOut">
+        <input type="submit" value="Log Out" />
+    </form>
+    <form asp-controller="Classroom" asp-action="Stats">
+        <input type="submit" value="Stats" />
+    </form>
+    <button id="createNewMaster">Skapa ny lärare</button>
+</div>
 
 <div id="wrapper">
 
@@ -19,15 +28,7 @@
         @Html.Partial("_TeacherChatBox")
     </div>
 </div>
-<div id="signOut">
-    <form asp-controller="Home" asp-action="SignOut">
-        <input type="submit" value="Log Out" />
-    </form>
-    <form asp-controller="Classroom" asp-action="Stats">
-        <input type="submit" value="Stats" />
-    </form>
-    <button id="createNewMaster">Skapa ny lärare</button>
-</div>
+
 
 @section scriptsSection
     {
