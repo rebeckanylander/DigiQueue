@@ -1,6 +1,7 @@
 ﻿@model HomeIndexLoginVM
 
-    <div id="digiMasterRub">Lärare</div>
+    <div id="viewHeader"><img src="~/imgs/avatar.png"  /><br />
+    Lärare</div>
 <form asp-controller="Home" asp-action="Index">
     <input asp-for="Username" placeholder="Username" />
     <br />
@@ -9,7 +10,7 @@
     <input asp-for="Password" placeholder="Password" />
     <br />
     <span asp-validation-for="Password"></span>
-    
+
     <input type="submit" value="Logga in" />
 </form>
 

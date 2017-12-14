@@ -29,10 +29,10 @@ namespace DigiQueue.Controllers
 
 
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> DigiMaster(int id)
+        public async Task<IActionResult> DigiMaster()
         {
-            ClassroomDigiMasterVM model = await repository.FindClassroom(id);
+            //ClassroomDigiMasterVM model = await repository.FindClassroom(id);
+            ClassroomDigiMasterVM model = await repository.FindClassroom(HttpContext.User);
             return View(model);
         }
 
@@ -48,7 +48,9 @@ namespace DigiQueue.Controllers
 
         public string GetTime()
         {
-            return JsonConvert.SerializeObject(repository.GetTimeArray(repository.GetUserId(HttpContext.User)));
+            var ini = repository.GetTimeArray(repository.GetUserId(HttpContext.User));
+            var str = JsonConvert.SerializeObject(ini);
+            return str;
         }
 
         public string GetLanguage()

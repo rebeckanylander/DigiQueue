@@ -8,19 +8,19 @@
 <div id="wrapper">
 
     <div id="alias" hidden>@Model.Alias</div>
-    <center><div id="classroomid">@Model.Classroom.Name</div></center>
+    <center><div id="classroomName">@Model.Classroom.Name</div></center>
     <audio id="notification" src="~/audio/capisci.mp3"></audio>
     <br />
     <div class="containerClassroom">
 
         @Html.Partial("_StudentProblemBox")
         @Html.Partial("_StudentChatbox")
-       
+
     </div>
     <br />
     <div class="containerClassroom">
         @Html.Partial("_loggedInList")
-        
+
         @Html.Partial("_StudentWaitingList")
         @Html.Partial("_StudentInfoboxFromTeacher")
     </div>
@@ -57,27 +57,31 @@
         $(document).ready(function () {
             let connection = new signalR.HubConnection('/digihub');
             connection.start().then(function () {
-                connection.invoke(digiFunctions.GetWaitingList, $("#classroomid").text());
+                connection.invoke(digiFunctions.GetWaitingList, $("#classroomName").text());
                 let message =
                     {
                         "alias": digiUi.alias.text(),
                         "command": "LogIn",
-                        "classroomId": $("#classroomid").text()
+                        "classroomName": $("#classroomName").text()
                     }
                 connection.invoke('GetLoggedInList', JSON.stringify(message));
             });
 
 
             digiUi.chatBoxButton.click(() => {
-                let message = {
-                    "alias": digiUi.alias.text(),
-                    "classroomId": $("#classroomid").text(),
-                    //"location": digiUi.locationText.val(),
-                    "description": digiUi.messageBox.val(),
-                    "command": "Message"
+                if (digiUi.messageBox.val().length > 100) {
+                    alert("Ditt meddelande är för lång, var vänlig korta ner ditt meddelande.");
+                } else {
+
+                    let message = {
+                        "alias": digiUi.alias.text(),
+                        "classroomName": $("#classroomName").text(),
+                        "description": digiUi.messageBox.val(),
+                        "command": "Message"
+                    }
+                    connection.invoke(digiFunctions.ChatSend, JSON.stringify(message));
+                    digiUi.messageBox.val("");
                 }
-                connection.invoke(digiFunctions.ChatSend, JSON.stringify(message));
-                digiUi.messageBox.val("");
             });
 
             connection.on(digiFunctions.onChatSend, data => {
@@ -87,25 +91,28 @@
 
 
             digiUi.problemButton.click(() => {
-                if (digiUi.problemButton.text() == "Add") { //Add
-                    digiUi.problemButton.text("Delete");
-                    let message = {
-                        "alias": digiUi.alias.text(),
-                        "location": digiUi.locationText.val(),
-                        "description": digiUi.descriptionText.val(),
-                        "command": "Add",
-                        "classroomId": $("#classroomid").text(),
-                        "ptype": $('#PType').find(":selected").val()
+                if (digiUi.problemButton.text() == "Add") {
+                    if (digiUi.descriptionText.val().length > 100) {
+                        alert("Din problembeskrivning är för lång, var vänlig korta ner din beskrivning.");
+                    } else {
+
+                        digiUi.problemButton.text("Delete");
+                        let message = {
+                            "alias": digiUi.alias.text(),
+                            "location": digiUi.locationText.val(),
+                            "description": digiUi.descriptionText.val(),
+                            "command": "Add",
+                            "classroomName": $("#classroomName").text(),
+                            "ptype": $('#PType').find(":selected").val()
+                        }
+                        connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
                     }
-                    connection.invoke(digiFunctions.AddWaitingListItem, JSON.stringify(message));
                 } else //Delete
                 {
                     let message = {
                         "alias": digiUi.alias.text(),
-                        "location": digiUi.locationText.val(),
-                        "description": digiUi.descriptionText.val(),
                         "command": "Remove",
-                        "classroomId": $("#classroomid").text()
+                        "classroomName": $("#classroomName").text()
                     }
                     digiUi.problemButton.text("Add");
                     connection.invoke(digiFunctions.RemoveSelfFromWaitingList, JSON.stringify(message));
@@ -116,7 +123,12 @@
                 digiUi.waitingList.text("");
                 var jsonObj = JSON.parse(data);
                 for (var i = 0; i < jsonObj.length; i++) {
-                    digiUi.waitingList.append(jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "\n");
+                    var lang = jsonObj[i].Language;
+                    if (lang == "Csharp") {
+                        lang = "C#";
+                    }
+                    digiUi.waitingList.append(jsonObj[i].Alias + " | " + jsonObj[i].Location + " | " + jsonObj[i].Description + " | " + lang + " | " + Math.round((new Date(Date.now()) - new Date(Date.parse(jsonObj[i].Time))) / 1000 / 60) + " min sedan\n");
+
                 }
             });
 
@@ -137,7 +149,7 @@
             });
 
             connection.on('onDisconnect', data => {
-                window.location.replace("/Error/ServerError");
+                window.location.replace("/Error/InputError");
             });
 
             connection.on(digiFunctions.onUpdateInfoBox, data => {

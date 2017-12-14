@@ -21,6 +21,7 @@ namespace DigiQueue.Models.Repositories
         Task<IdentityResult> CreateUser(string username, string password);
         Task<string> GetUserAsync(string username);
         string GetUsername(ClaimsPrincipal claimsPrincipal);
+        Task<ClassroomDigiMasterVM> FindClassroom(ClaimsPrincipal user);
         void SaveChatToDigiBase(ProtocolMessage json);
         void SaveProblemToDigiBase(ProtocolMessage json);
         int GetClassroomId(string id);
