@@ -48,12 +48,12 @@ namespace DigiQueue.Controllers
 
         public string GetTime()
         {
-            return JsonConvert.SerializeObject(repository.GetTimeArray());
+            return JsonConvert.SerializeObject(repository.GetTimeArray(repository.GetUserId(HttpContext.User)));
         }
 
         public string GetLanguage()
         {
-            return JsonConvert.SerializeObject(repository.GetLanguageArray());
+            return JsonConvert.SerializeObject(repository.GetLanguageArray(repository.GetUserId(HttpContext.User)));
         }
     }
 }

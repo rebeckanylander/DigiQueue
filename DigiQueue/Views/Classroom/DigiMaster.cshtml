@@ -22,7 +22,7 @@
 <div id="signOut">
     <form asp-controller="Home" asp-action="SignOut">
         <input type="submit" value="Log Out" />
-</form>
+    </form>
 </div>
 
 @section scriptsSection
@@ -102,7 +102,15 @@
                     digiUi.teacherWaitingList.html("");
                     var jsonObj = JSON.parse(data);
                     for (var i = 0; i < jsonObj.length; i++) {
-                        digiUi.teacherWaitingList.append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " " + jsonObj[i].Location + " " + jsonObj[i].Description + "</option>");
+                        var lang = jsonObj[i].Language;
+                        if (lang == "Csharp") {
+                            lang = "C#";
+                        }
+                        var tag = document.createElement('option');
+                        tag.setAttribute('value', jsonObj[i].Alias);
+                        tag.innerHTML = jsonObj[i].Alias + " | " + jsonObj[i].Location + " | " + jsonObj[i].Description + " | " + lang + " | " + Math.round((new Date(Date.now()) - new Date(Date.parse(jsonObj[i].Time))) / 1000 / 60) + " min sedan";
+                        digiUi.teacherWaitingList.append(tag);
+                        //digiUi.teacherWaitingList.append("<option value='" + jsonObj[i].Alias + "'>" + jsonObj[i].Alias + " | " + jsonObj[i].Location + " | " + jsonObj[i].Description + " | " + lang + " | " + Math.round((new Date(Date.now()) - new Date(Date.parse(jsonObj[i].Time))) / 1000 / 60) + " min sedan" + "</option>");
                     }
                     var problems = $('#teacherWaitingList option').length;
                     if (problems == 1 && prevProblems == 0) {
@@ -113,6 +121,10 @@
                 connection.on(digiFunctions.onChatSend, data => {
                     digiUi.chatBox.append(data + "\n");
                     digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
+                });
+
+                connection.on('onDisconnect', data => {
+                    window.location.replace("/Error/ServerError");
                 });
 
                 connection.on('onLogIn', data => {

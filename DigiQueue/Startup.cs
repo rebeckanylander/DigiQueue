@@ -64,7 +64,7 @@ namespace DigiQueue
                 app.UseExceptionHandler("/Error/ServerError");
             }
 
-            app.UseStatusCodePagesWithRedirects("/Error/HttpError/{0}");
+            //app.UseStatusCodePagesWithRedirects("/Error/HttpError/{0}");
 
             app.UseAuthentication();
             app.UseStaticFiles();

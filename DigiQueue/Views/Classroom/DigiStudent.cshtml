@@ -137,6 +137,10 @@
                 $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
             });
 
+            connection.on('onDisconnect', data => {
+                window.location.replace("/Error/ServerError");
+            });
+
             connection.on(digiFunctions.onUpdateInfoBox, data => {
                 digiUi.infoBox.val("");
                 var jsonObj = JSON.parse(data);
