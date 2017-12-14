@@ -137,24 +137,6 @@ input[type=submit], button {
     border-radius: 10px;
 }
 
-/*#findClassroomDiv {
-    /*background-image: url('../imgs/academy1.jpg');*/
-    /*background-color: #fafafa;
-    opacity: 0.95;
-    background-size: auto;
-    height: 400px;
-    width: 400px;
-    padding-top: 10%;
-    padding-bottom: 17%;
-    text-align: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-right: 5%;
-    margin-left: 5%;
-    margin-top: 2%;
-    margin-bottom: 2%;*/
-/*}*/
-
 
 .footer {
     height: 60px;
@@ -171,8 +153,13 @@ input[type=submit], button {
 #teacherWaitingList {
     width: 200px;
 }
+
 #errorDesign {
     font-size: 80px;
     color: #3f3f3f;
     text-shadow: -1px 0 #3f3f3f, 0 1px #3f3f3f, 1px 0 #3f3f3f, 0 -1px #3f3f3f;
+}
+
+#sortButtonsDiv {
+    margin-right: 100px;
 }
