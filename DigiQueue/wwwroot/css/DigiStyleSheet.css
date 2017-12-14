@@ -1,5 +1,6 @@
 ﻿body {
     background-image: url('../imgs/academy1.jpg');
+    background-repeat: no-repeat;
     margin: 0px;
     font-family: 'Montserrat:50', sans-serif;
     color: #3f3f3f;
@@ -45,12 +46,11 @@ input[type=submit], button {
     background-color: #fafafa;
     padding-top: 50px;
     margin: 8%;
-    opacity: 0.9;
-    background: #fafafa; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(left top, #fafafa, #f1f1f1); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, #fafafa, #f1f1f1); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, #fafafa, #f1f1f1); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, #fafafa, #f1f1f1); /* Standard syntax (must be last) */
+    /*opacity: 0.9;*/
+    /*background: #fafafa; /* For browsers that do not support gradients */
+    background: rgb(250, 250, 250);
+    background: rgba(250, 250, 250, 0.80);
+    border-radius: 10px;
 }
 
 .navbar-header {
@@ -101,39 +101,59 @@ input[type=submit], button {
     font-size: 36px;
 }
 
-#digiMasterRub, #digiStudentRub {
-    margin-bottom: 60px;
-    font-size: 60px;
-    color: white;
-    font-weight: 500;
+#viewHeader {
+    font-size: 20px;
+    color: #45a049;
+    margin-bottom:20px;
     text-transform: uppercase;
-    text-shadow: 0px 2px 16px grey;
+    font-weight:600;
 }
+    #viewHeader > img {
+        border-radius: 50%;
+        background-color: white;
+        width: 100px;
+        padding: 5px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        opacity:1.0;
+  
+    }
 
-#createClassroomDiv {
-    background-image: url('../imgs/academy2.jpg');
+#createClassroomDiv, #findClassroomDiv {
+    /*background-image: url('../imgs/academy2.jpg');*/
+    /*background-color: #fafafa;*/
+    background: rgb(250, 250, 250);
+    background: rgba(250, 250, 250, 0.95);
+    /*opacity: 0.9;*/
     background-size: auto;
-    height: auto;
-    width: 1000px;
+    height: 400px;
+    width: 400px;
     padding-top: 10%;
     padding-bottom: 17%;
     text-align: center;
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 5%;
+    border-radius: 10px;
 }
 
-#findClassroomDiv {
-    background-image: url('../imgs/academy1.jpg');
+/*#findClassroomDiv {
+    /*background-image: url('../imgs/academy1.jpg');*/
+    /*background-color: #fafafa;
+    opacity: 0.95;
     background-size: auto;
-    height: auto;
-    width: 1000px;
+    height: 400px;
+    width: 400px;
     padding-top: 10%;
     padding-bottom: 17%;
     text-align: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: center;
-}
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;*/
+/*}*/
 
 
 .footer {
@@ -151,4 +171,8 @@ input[type=submit], button {
 #teacherWaitingList {
     width: 200px;
 }
-
+#errorDesign {
+    font-size: 80px;
+    color: #3f3f3f;
+    text-shadow: -1px 0 #3f3f3f, 0 1px #3f3f3f, 1px 0 #3f3f3f, 0 -1px #3f3f3f;
+}
