@@ -1,12 +1,23 @@
-﻿<button id="language">Language</button>
-<button id="time">Time</button>
-<br />
-<button id="bar">Bar</button>
-<button id="pie">Pie</button>
-<center><h6>Kicka på något</h6></center>
+﻿<div id="wrapper">
+    <div class="container">
+        <div id="sortButtonsDiv">
+        <h4>Sortera efter:</h4>
+            <button id="language">Language</button>
+            <button id="time">Time</button>
+        </div>
+        <div id="typeButtonsDiv">
+            <h4>Typ av diagram:</h4>
+            <button id="bar">Bar</button>
+            <button id="pie">Pie</button>
+        </div>
+    </div>
+        <center><h3 id="statsRub"></h3></center>
 <div>
     <canvas id="myChart" width="400" height="400"></canvas>
 </div>
+</div>
+
+
 @section scriptsSection
     {
 
@@ -17,6 +28,20 @@
         var type = 'pie';
         var chartLabels = [];
         var chartData = [];
+        var backgroundColors = ['rgba(69, 160, 73, 0.10)',
+            'rgba(69, 160, 73, 0.25)',
+            'rgba(69, 160, 73, 0.40)',
+            'rgba(69, 160, 73, 0.55)',
+            'rgba(69, 160, 73, 0.70)',
+            'rgba(69, 160, 73, 0.85)',
+            'rgba(69, 160, 73, 1)'];
+        var borderColors = ['rgba(69, 160, 73, 0.10)',
+            'rgba(69, 160, 73, 0.25)',
+            'rgba(69, 160, 73, 0.40)',
+            'rgba(69, 160, 73, 0.55)',
+            'rgba(69, 160, 73, 0.70)',
+            'rgba(69, 160, 73, 0.85)',
+            'rgba(69, 160, 73, 1)'];
         var myChart = CreateChart(label, type, chartLabels, chartData);
 
         $("#time").click(function () {
@@ -29,6 +54,7 @@
                     chartData = JSON.parse(result);
                     myChart.destroy();
                     myChart = CreateChart(label, type, chartLabels, chartData);
+                    $("#statsRub").text("Tidsåtgång per problem");
                 }
             });
 
@@ -44,6 +70,7 @@
                     chartData = JSON.parse(result);
                     myChart.destroy();
                     myChart = CreateChart(label, type, chartLabels, chartData);
+                    $("#statsRub").text("Antal rapporterade problem per språk");
                 }
             });
         });
@@ -68,24 +95,8 @@
                     datasets: [{
                         label: label,
                         data: stats,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(23, 59, 9, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(23, 59, 9, 1)'
-                        ],
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
                         borderWidth: 1
                     }]
                 },
