@@ -26,6 +26,7 @@
     <form asp-controller="Classroom" asp-action="Stats">
         <input type="submit" value="Stats" />
     </form>
+    <button id="createNewMaster">Skapa ny lärare</button>
 </div>
 
 @section scriptsSection
@@ -138,6 +139,11 @@
                     }
                     $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
                 });
+
+                $("#createNewMaster").click(function () { 
+                    window.location.replace("/Home/Index");
+                });
+
             }
         );
     </script>

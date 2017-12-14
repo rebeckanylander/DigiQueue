@@ -86,7 +86,7 @@ namespace DigiQueue.Controllers
             }
 
             var id = await repository.GetUserAsync(viewModel.Username);
-            return RedirectToAction("DigiMaster", "Classroom"/*, new { id = repository.GetClassroomId(id) }*/);
+            return RedirectToAction("DigiMaster", "Classroom");
         }
 
         //[Authorize]

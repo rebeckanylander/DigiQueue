@@ -2,7 +2,7 @@
 
 @{ViewBag.Title = "Register";}
 
-<div id="viewHeader"><img src="~/imgs/avatar.png" /><br />
+<div id="viewHeader"><img src="~/imgs/pen.png"/><br />
     Skapa ny lärare</div>
 <div>@Model.Message</div>
     
@@ -22,19 +22,6 @@
     <br />
 
     <input type="submit" value="Register" />
-    <p>eller</p>
-    <button style="width:180px;">Gå till ditt klassrum</button>
-</form>
-<form asp-controller="Classroom" asp-action="DigiMaster">
-    <input type="submit" value="Gå till ditt klassrum" />
-</form>
-<form asp-controller="Classroom" asp-action="Stats">
-    <input type="submit" value="Statistik" />
-</form>
-<form asp-controller="Home" asp-action="SignOut">
-    <input type="submit" value="Logga Ut" />
 </form>
 
-@section scriptsSection {
-    @Html.Partial("ValidationScript")
-}
+
