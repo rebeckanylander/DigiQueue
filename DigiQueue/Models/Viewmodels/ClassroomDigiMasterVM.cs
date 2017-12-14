@@ -8,6 +8,6 @@ namespace DigiQueue.Models.Viewmodels
 {
     public class ClassroomDigiMasterVM
     {
-        public Classroom Classroom { get; set; }
+        public UserExtension Classroom { get; set; }
     }
 }

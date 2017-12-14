@@ -13,9 +13,9 @@ namespace DigiQueue.Models.Repositories
     {
         Task<ClassroomDigiMasterVM> CreateClassroom(string name, string id);
         Task<bool> IsClassroomNameAvailable(string name);
-        Task<ClassroomDigiMasterVM> FindClassroom(string alias, Classroom classroom);
+        Task<ClassroomDigiMasterVM> FindClassroom(string alias, UserExtension classroom);
         Task<ClassroomDigiMasterVM> FindClassroom(int id);
-        Task<Classroom[]> GetAllClassrooms();
+        Task<UserExtension[]> GetAllClassrooms();
         Task<SignInResult> SignIn(string username, string password);
         string GetUserId(ClaimsPrincipal claimsPrincipal);
         Task<IdentityResult> CreateUser(string username, string password);
