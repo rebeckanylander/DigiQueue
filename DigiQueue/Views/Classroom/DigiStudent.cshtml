@@ -89,6 +89,7 @@
                 digiUi.chatBox.append(data + "\n");
                 digiUi.chatBox.scrollTop(digiUi.chatBox[0].scrollHeight);
             });
+
             connection.on('onRemoveItem', data => {
                 digiUi.problemButton.text("Add");
                 alert("Läraren har tagit bort dig från listan");
