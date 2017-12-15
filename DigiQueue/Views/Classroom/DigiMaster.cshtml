@@ -4,15 +4,7 @@
 
 @model ClassroomDigiMasterVM
 
-<div id="signOut">
-    <form asp-controller="Home" asp-action="SignOut">
-        <input type="submit" value="Log Out" />
-    </form>
-    <form asp-controller="Classroom" asp-action="Stats">
-        <input type="submit" value="Stats" />
-    </form>
-    <button id="createNewMaster">Skapa ny lärare</button>
-</div>
+
 
 <div id="wrapper">
 
@@ -28,7 +20,21 @@
         @Html.Partial("_TeacherChatBox")
     </div>
 </div>
-
+<div class="container">
+    <div>
+        <form asp-controller="Home" asp-action="SignOut">
+            <input type="submit" value="Log Out" />
+        </form>
+        <div>
+            <form asp-controller="Classroom" asp-action="Stats">
+                <input type="submit" value="Stats" />
+            </form>
+        </div>
+        <div>
+            <button id="createNewMaster">Skapa ny lärare</button>
+        </div>
+    </div>
+</div>
 
 @section scriptsSection
     {
@@ -141,7 +147,7 @@
                     $("#loggedInList").scrollTop($("#loggedInList")[0].scrollHeight);
                 });
 
-                $("#createNewMaster").click(function () { 
+                $("#createNewMaster").click(function () {
                     window.location.replace("/Home/Index");
                 });
 
