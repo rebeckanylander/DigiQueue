@@ -1,3 +1,10 @@
 ﻿@{ Layout = null; }
 
-<p>Fel hantering av applikationen. Vänlig gå tillbaka till startsidan.</p>
+<div id="errorDesign">Fel hantering av applikationen. Vänlig tryck på knappen för att gå tillbaka till startsidan.</div>
+<button id="createNewMaster">Startsidan</button>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-3.1.0.js"></script>
+<script>
+    $("#createNewMaster").click(function () {
+        window.location.replace("/Home/Index");
+    });
+</script>

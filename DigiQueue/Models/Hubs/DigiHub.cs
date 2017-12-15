@@ -92,7 +92,7 @@ namespace DigiQueue.Models.Hubs
                 return Clients.Group(json.ClassroomName).InvokeAsync("onChatSend", send);
             }
 
-            return Task.FromResult<object>(null); //ingenting händer
+            return Task.FromResult<object>(null); 
         }
 
         //Lägga till sig på listan - digistudent
