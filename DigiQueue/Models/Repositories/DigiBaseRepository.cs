@@ -119,10 +119,10 @@ namespace DigiQueue.Models.Repositories
             var lis = list.Select(x => new {Hours = x.Hours, Minutes = x.Minutes } );
 
             return new int[] {
-                lis.Count(x => x.Minutes < 5),
-                lis.Count(x => x.Minutes >= 5 && x.Minutes < 15),
-                lis.Count(x => x.Minutes >= 15 && x.Minutes < 30),
-                lis.Count(x => x.Minutes >= 30 && x.Minutes < 60),
+                lis.Count(x => x.Minutes < 5 && x.Hours == 0),
+                lis.Count(x => x.Minutes >= 5 && x.Minutes < 15 && x.Hours == 0),
+                lis.Count(x => x.Minutes >= 15 && x.Minutes < 30 && x.Hours == 0),
+                lis.Count(x => x.Minutes >= 30 && x.Minutes < 60 && x.Hours == 0),
                 lis.Count(x => x.Hours == 1),
                 lis.Count(x => x.Hours > 1),
                 context.Problem.Where(x => x.ClassroomId == classroomid).Count(x => x.EndDate == null)
