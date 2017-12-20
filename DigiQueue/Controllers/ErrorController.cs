@@ -13,6 +13,7 @@ namespace DigiQueue.Controllers
         public IActionResult HttpError(int id)
         {
             return View(id);
+
         }
 
         public IActionResult ServerError()
